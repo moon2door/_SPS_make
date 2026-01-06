@@ -5,6 +5,7 @@ using Firebase.Auth;
 using Firebase.Auth.Providers;
 using Firebase.Database;
 using Firebase.Database.Query;
+using System.Collections.ObjectModel;
 
 namespace _SPS.ViewModels
 {
@@ -16,6 +17,7 @@ namespace _SPS.ViewModels
 
         [ObservableProperty] private string name;
         [ObservableProperty] private string species;
+        [ObservableProperty] private string gender;
         [ObservableProperty] private string age;
         [ObservableProperty] private string description;
         [ObservableProperty] private string weight;
@@ -23,6 +25,9 @@ namespace _SPS.ViewModels
         [ObservableProperty] private string feature;
         [ObservableProperty] private string contact;
         [ObservableProperty] private string location;
+
+        [ObservableProperty]
+        private ObservableCollection<string> petImages = new();
 
         // 내가 쓴 글인지 확인
         [ObservableProperty]
@@ -34,8 +39,6 @@ namespace _SPS.ViewModels
         [NotifyPropertyChangedFor(nameof(CanEdit))] // 값이 바뀌면 CanEdit도 다시 계산
         private bool isReadOnly;
 
-        // ★ [핵심] 최종적으로 버튼을 보여줄지 결정하는 속성
-        // 조건: "내가 쓴 글(IsOwner)" 이면서 동시에 "읽기 전용이 아닐 때(!IsReadOnly)"
         public bool CanEdit => IsOwner && !IsReadOnly;
 
         private readonly FirebaseClient _dbClient;
@@ -59,6 +62,10 @@ namespace _SPS.ViewModels
             {
                 Name = value.Name;
                 Species = value.Species;
+
+                // [추가] 성별 연결
+                Gender = value.Gender;
+
                 Age = value.Age;
                 Description = value.Description;
                 Weight = value.Weight;
@@ -67,8 +74,17 @@ namespace _SPS.ViewModels
                 Contact = value.Contact;
                 Location = value.Location;
 
+                // [추가] 4장의 사진 중 있는 것만 골라서 리스트에 담기
+                PetImages.Clear();
+                if (!string.IsNullOrEmpty(value.ImageUrl1)) PetImages.Add(value.ImageUrl1);
+                if (!string.IsNullOrEmpty(value.ImageUrl2)) PetImages.Add(value.ImageUrl2);
+                if (!string.IsNullOrEmpty(value.ImageUrl3)) PetImages.Add(value.ImageUrl3);
+                if (!string.IsNullOrEmpty(value.ImageUrl4)) PetImages.Add(value.ImageUrl4);
+
+                // 만약 사진이 한 장도 없다면 기본 이미지(플레이스홀더)라도 하나 넣음
+                if (PetImages.Count == 0) PetImages.Add("dotnet_bot.png");
+
                 var myUid = _authClient.User?.Uid;
-                // 작성자 본인인지 확인
                 IsOwner = !string.IsNullOrEmpty(myUid) && value.OwnerId == myUid;
             }
         }

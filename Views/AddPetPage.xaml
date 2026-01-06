@@ -14,24 +14,71 @@
 
             <Label Text="보호 동물 정보 입력" FontSize="20" FontAttributes="Bold" />
 
-            <Frame HeightRequest="200" CornerRadius="10" Padding="0" IsClippedToBounds="True" BackgroundColor="#eee">
-                <Grid>
-                    <Image Source="{Binding PetImageSource}" Aspect="AspectFill" />
+            <Grid RowDefinitions="150, 150" ColumnDefinitions="*, *" ColumnSpacing="10" RowSpacing="10">
 
-                    <Label Text="📸 터치하여 사진 선택 (AI 분석)" 
-                           VerticalOptions="Center" 
-                           HorizontalOptions="Center" 
-                           TextColor="Gray"
-                           IsVisible="{Binding IsImagePlaceholderVisible}"/>
+                <Frame Grid.Row="0" Grid.Column="0" Padding="0" IsClippedToBounds="True" BackgroundColor="#eee" CornerRadius="10">
+                    <Grid>
+                        <Image Source="{Binding PetImageSource1}" Aspect="AspectFill"/>
+                        <Label Text="📸 전면(AI)" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
+                        <Button BackgroundColor="Transparent" Command="{Binding PickImageCommand}" CommandParameter="1"/>
+                    </Grid>
+                </Frame>
 
-                    <Button BackgroundColor="Transparent" 
-                            Command="{Binding PickImageCommand}" 
-                            HorizontalOptions="Fill" VerticalOptions="Fill"/>
-                </Grid>
-            </Frame>
+                <Frame Grid.Row="0" Grid.Column="1" Padding="0" IsClippedToBounds="True" BackgroundColor="#eee" CornerRadius="10">
+                    <Grid>
+                        <Image Source="{Binding PetImageSource2}" Aspect="AspectFill"/>
+                        <Label Text="📸 측면" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
+                        <Button BackgroundColor="Transparent" Command="{Binding PickImageCommand}" CommandParameter="2"/>
+                    </Grid>
+                </Frame>
+
+                <Frame Grid.Row="1" Grid.Column="0" Padding="0" IsClippedToBounds="True" BackgroundColor="#eee" CornerRadius="10">
+                    <Grid>
+                        <Image Source="{Binding PetImageSource3}" Aspect="AspectFill"/>
+                        <Label Text="📸 자유" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
+                        <Button BackgroundColor="Transparent" Command="{Binding PickImageCommand}" CommandParameter="3"/>
+                    </Grid>
+                </Frame>
+
+                <Frame Grid.Row="1" Grid.Column="1" Padding="0" IsClippedToBounds="True" BackgroundColor="#eee" CornerRadius="10">
+                    <Grid>
+                        <Image Source="{Binding PetImageSource4}" Aspect="AspectFill"/>
+                        <Label Text="📸 보호자와" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
+                        <Button BackgroundColor="Transparent" Command="{Binding PickImageCommand}" CommandParameter="4"/>
+                    </Grid>
+                </Frame>
+            </Grid>
 
             <Entry Placeholder="이름 (예: 뽀삐)" Text="{Binding Name}" />
             <Entry Placeholder="종 (예: 말티즈)" Text="{Binding Species}" />
+
+            <Frame Padding="15,5" BorderColor="LightGray" CornerRadius="10" BackgroundColor="#F5F5F5" HasShadow="False">
+                <Grid ColumnDefinitions="Auto, *">
+                    <Label Grid.Column="0" 
+                           Text="성별" 
+                           FontAttributes="Bold"
+                           FontSize="16"
+                           VerticalOptions="Center" 
+                           TextColor="#333"
+                           Margin="0,0,10,0"/>
+
+                    <Picker Grid.Column="1" 
+                            Title="선택해주세요" 
+                            SelectedItem="{Binding Gender}"
+                            TextColor="Black"
+                            TitleColor="Gray"
+                            HorizontalOptions="FillAndExpand">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>수컷 (Male)</x:String>
+                                <x:String>암컷 (Female)</x:String>
+                                <x:String>알 수 없음</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </Grid>
+            </Frame>
+
             <Entry Placeholder="나이 (예: 3살)" Text="{Binding Age}" Keyboard="Numeric"/>
 
             <Grid ColumnDefinitions="*,*" ColumnSpacing="10">

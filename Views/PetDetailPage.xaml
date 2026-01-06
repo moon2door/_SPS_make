@@ -3,61 +3,88 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="_SPS.Views.PetDetailPage"
              xmlns:viewmodels="clr-namespace:_SPS.ViewModels"
-             Title="상세 정보">
+             Title="{Binding Name}">
 
     <ContentPage.BindingContext>
         <viewmodels:PetDetailViewModel />
     </ContentPage.BindingContext>
 
     <ScrollView>
-        <VerticalStackLayout Spacing="15" Padding="20">
-            <Label Text="동물 정보" FontSize="18" FontAttributes="Bold" TextColor="Gray" Margin="0,0,0,10"/>
+        <VerticalStackLayout Spacing="20" Padding="0,0,0,30">
 
-            <Image Source="{Binding Pet.ImageUrl}" HeightRequest="200" Aspect="AspectFill" BackgroundColor="#eee"/>
+            <Grid HeightRequest="300">
+                <CarouselView ItemsSource="{Binding PetImages}"
+                              IndicatorView="indicatorView">
+                    <CarouselView.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding .}" 
+                                   Aspect="AspectFill" 
+                                   BackgroundColor="#f0f0f0"/>
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+                </CarouselView>
 
-            <Label Text="이름" FontSize="12" TextColor="Gray"/>
-            <Entry Text="{Binding Name}" IsReadOnly="{Binding IsReadOnly}" />
-            <Label Text="종" FontSize="12" TextColor="Gray"/>
-            <Entry Text="{Binding Species}" IsReadOnly="{Binding IsReadOnly}"/>
-
-            <Label Text="나이" FontSize="12" TextColor="Gray"/>
-            <Entry Text="{Binding Age}" Keyboard="Numeric" IsReadOnly="{Binding IsReadOnly}"/>
-
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                <VerticalStackLayout Grid.Column="0">
-                    <Label Text="몸무게" FontSize="12" TextColor="Gray"/>
-                    <Entry Text="{Binding Weight}" Keyboard="Numeric" IsReadOnly="{Binding IsReadOnly}"/>
-                </VerticalStackLayout>
-                <VerticalStackLayout Grid.Column="1">
-                    <Label Text="상태" FontSize="12" TextColor="Gray"/>
-                    <Entry Text="{Binding Condition}" IsReadOnly="{Binding IsReadOnly}"/>
-                </VerticalStackLayout>
+                <IndicatorView x:Name="indicatorView"
+                               IndicatorColor="LightGray"
+                               SelectedIndicatorColor="Black"
+                               HorizontalOptions="Center"
+                               VerticalOptions="End"
+                               Margin="0,0,0,10"/>
             </Grid>
 
-            <Label Text="특징" FontSize="12" TextColor="Gray"/>
-            <Entry Text="{Binding Feature}" IsReadOnly="{Binding IsReadOnly}"/>
+            <VerticalStackLayout Spacing="10" Padding="20">
 
-            <Label Text="연락처" FontSize="12" TextColor="Gray"/>
-            <Entry Text="{Binding Contact}" Keyboard="Telephone" IsReadOnly="{Binding IsReadOnly}"/>
+                <StackLayout Orientation="Horizontal" Spacing="10">
+                    <Label Text="{Binding Name}" FontSize="28" FontAttributes="Bold" TextColor="Black"/>
+                    <Frame Padding="8,4" BackgroundColor="#E3F2FD" CornerRadius="5" BorderColor="Transparent" VerticalOptions="Center">
+                        <Label Text="{Binding Gender}" TextColor="#1976D2" FontSize="12" FontAttributes="Bold"/>
+                    </Frame>
+                </StackLayout>
 
-            <Label Text="발견 위치" FontSize="12" TextColor="Gray"/>
-            <Entry Text="{Binding Location}" IsReadOnly="{Binding IsReadOnly}"/>
+                <Label Text="{Binding Species}" FontSize="18" TextColor="Gray" />
 
-            <Label Text="설명" FontSize="12" TextColor="Gray"/>
-            <Editor Text="{Binding Description}" HeightRequest="100" AutoSize="TextChanges" IsReadOnly="{Binding IsReadOnly}"/>
+                <BoxView HeightRequest="1" Color="LightGray" />
 
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,20,0,0"
-                  IsVisible="{Binding CanEdit}">
-                <Button Grid.Column="0" 
-                        Text="수정 저장" 
-                        Command="{Binding UpdatePetCommand}" 
-                        BackgroundColor="#4CAF50"/>
+                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto, Auto" RowSpacing="10" ColumnSpacing="15">
 
-                <Button Grid.Column="1" 
-                        Text="삭제" 
-                        Command="{Binding DeletePetCommand}" 
-                        BackgroundColor="#F44336"/>
+                    <Label Grid.Row="0" Grid.Column="0" Text="나이" FontAttributes="Bold" />
+                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding Age}" />
+
+                    <Label Grid.Row="1" Grid.Column="0" Text="몸무게" FontAttributes="Bold" />
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Weight}" />
+
+                    <Label Grid.Row="2" Grid.Column="0" Text="상태" FontAttributes="Bold" />
+                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding Condition}" />
+
+                    <Label Grid.Row="3" Grid.Column="0" Text="특징" FontAttributes="Bold" />
+                    <Label Grid.Row="3" Grid.Column="1" Text="{Binding Feature}" />
+
+                </Grid>
+
+                <Frame BackgroundColor="#FFF3E0" BorderColor="#FFB74D" Padding="15" Margin="0,10">
+                    <VerticalStackLayout>
+                        <Label Text="📍 발견/보호 위치" TextColor="#F57C00" FontAttributes="Bold" Margin="0,0,0,5"/>
+                        <Label Text="{Binding Location}" TextColor="Black"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame BackgroundColor="#E8F5E9" BorderColor="#4CAF50" Padding="15">
+                    <VerticalStackLayout>
+                        <Label Text="📞 연락처" TextColor="#2E7D32" FontAttributes="Bold" Margin="0,0,0,5"/>
+                        <Label Text="{Binding Contact}" TextColor="Black" FontSize="16"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Label Text="추가 설명" FontAttributes="Bold" Margin="0,10,0,0"/>
+                <Label Text="{Binding Description}" />
+
+            </VerticalStackLayout>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Padding="20" IsVisible="{Binding CanEdit}">
+                <Button Grid.Column="0" Text="수정" Command="{Binding UpdatePetCommand}" BackgroundColor="Orange"/>
+                <Button Grid.Column="1" Text="삭제" Command="{Binding DeletePetCommand}" BackgroundColor="Red"/>
             </Grid>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
