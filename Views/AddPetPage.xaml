@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="_SPS.Views.AddPetPage"
+             xmlns:viewmodels="clr-namespace:_SPS.ViewModels"
+             Title="새 동물 등록">
+
+    <ContentPage.BindingContext>
+        <viewmodels:AddPetViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" Padding="20">
+
+            <Label Text="보호 동물 정보 입력" FontSize="20" FontAttributes="Bold" />
+
+            <Frame HeightRequest="200" CornerRadius="10" Padding="0" IsClippedToBounds="True" BackgroundColor="#eee">
+                <Grid>
+                    <Image Source="{Binding PetImageSource}" Aspect="AspectFill" />
+
+                    <Label Text="📸 터치하여 사진 선택 (AI 분석)" 
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center" 
+                           TextColor="Gray"
+                           IsVisible="{Binding IsImagePlaceholderVisible}"/>
+
+                    <Button BackgroundColor="Transparent" 
+                            Command="{Binding PickImageCommand}" 
+                            HorizontalOptions="Fill" VerticalOptions="Fill"/>
+                </Grid>
+            </Frame>
+
+            <Entry Placeholder="이름 (예: 뽀삐)" Text="{Binding Name}" />
+            <Entry Placeholder="종 (예: 말티즈)" Text="{Binding Species}" />
+            <Entry Placeholder="나이 (예: 3살)" Text="{Binding Age}" Keyboard="Numeric"/>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Entry Grid.Column="0" Placeholder="몸무게 (kg)" Text="{Binding Weight}" Keyboard="Numeric"/>
+                <Entry Grid.Column="1" Placeholder="상태 (예: 건강함)" Text="{Binding Condition}" />
+            </Grid>
+
+            <Entry Placeholder="특징 (예: 꼬리가 짧음)" Text="{Binding Feature}" />
+            <Entry Placeholder="연락처 (예: 010-1234-5678)" Text="{Binding Contact}" Keyboard="Telephone"/>
+
+            <Frame Padding="10" BackgroundColor="#F0F0F0" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="{Binding Location, TargetNullValue='📍 위치 정보 없음'}" TextColor="Black"/>
+                    <Button Text="내 위치 찾기 (GPS)" 
+                            Command="{Binding GetCurrentLocationCommand}" 
+                            BackgroundColor="#2196F3" 
+                            HeightRequest="40"
+                            FontSize="14"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Editor Placeholder="추가 설명" 
+                    Text="{Binding Description}" 
+                    HeightRequest="80" 
+                    AutoSize="TextChanges"/>
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Blue"/>
+
+            <Button Text="등록하기" 
+                    Command="{Binding SavePetCommand}" 
+                    BackgroundColor="#4CAF50" 
+                    FontAttributes="Bold"
+                    Margin="0,10,0,20"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

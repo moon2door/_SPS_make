@@ -1,0 +1,261 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\_SPS\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\views\\addpetpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:views\\addpetpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\views\\mainpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:views\\mainpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\views\\petdetailpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:views\\petdetailpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\_sps.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:_sps.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\views\\myuploadspage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:views\\myuploadspage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\viewmodels\\myuploadsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:viewmodels\\myuploadsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\views\\mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:views\\mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\viewmodels\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:viewmodels\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\viewmodels\\petdetailviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:viewmodels\\petdetailviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\viewmodels\\addpetviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:viewmodels\\addpetviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\appshell.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:appshell.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\views\\myuploadspage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:views\\myuploadspage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\platforms\\android\\androidmanifest.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:platforms\\android\\androidmanifest.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\models\\usermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:models\\usermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_SPS.csproj",
+              "DocumentMoniker": "C:\\_SPS\\_SPS.csproj",
+              "RelativeDocumentMoniker": "_SPS.csproj",
+              "ToolTip": "C:\\_SPS\\_SPS.csproj",
+              "RelativeToolTip": "_SPS.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-12-07T11:54:29.973Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MyUploadsPage.xaml",
+              "DocumentMoniker": "C:\\_SPS\\Views\\MyUploadsPage.xaml",
+              "RelativeDocumentMoniker": "Views\\MyUploadsPage.xaml",
+              "ToolTip": "C:\\_SPS\\Views\\MyUploadsPage.xaml",
+              "RelativeToolTip": "Views\\MyUploadsPage.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-12-07T08:17:26.291Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PetDetailPage.xaml",
+              "DocumentMoniker": "C:\\_SPS\\Views\\PetDetailPage.xaml",
+              "RelativeDocumentMoniker": "Views\\PetDetailPage.xaml",
+              "ToolTip": "C:\\_SPS\\Views\\PetDetailPage.xaml",
+              "RelativeToolTip": "Views\\PetDetailPage.xaml",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAqwB8AAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-12-07T08:18:03.183Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MainViewModel.cs",
+              "DocumentMoniker": "C:\\_SPS\\ViewModels\\MainViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\MainViewModel.cs",
+              "ToolTip": "C:\\_SPS\\ViewModels\\MainViewModel.cs",
+              "RelativeToolTip": "ViewModels\\MainViewModel.cs",
+              "ViewState": "AgIAAL8AAAAAAAAAAAAlwNsAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-07T08:18:57.872Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MyUploadsViewModel.cs",
+              "DocumentMoniker": "C:\\_SPS\\ViewModels\\MyUploadsViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\MyUploadsViewModel.cs",
+              "ToolTip": "C:\\_SPS\\ViewModels\\MyUploadsViewModel.cs",
+              "RelativeToolTip": "ViewModels\\MyUploadsViewModel.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAcwFwAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-07T08:16:47.361Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "MainPage.xaml.cs",
+              "DocumentMoniker": "C:\\_SPS\\Views\\MainPage.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\MainPage.xaml.cs",
+              "ToolTip": "C:\\_SPS\\Views\\MainPage.xaml.cs",
+              "RelativeToolTip": "Views\\MainPage.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-07T08:24:03.006Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AddPetPage.xaml",
+              "DocumentMoniker": "C:\\_SPS\\Views\\AddPetPage.xaml",
+              "RelativeDocumentMoniker": "Views\\AddPetPage.xaml",
+              "ToolTip": "C:\\_SPS\\Views\\AddPetPage.xaml",
+              "RelativeToolTip": "Views\\AddPetPage.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-12-07T08:12:56.676Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "LoginViewModel.cs",
+              "DocumentMoniker": "C:\\_SPS\\ViewModels\\LoginViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\LoginViewModel.cs",
+              "ToolTip": "C:\\_SPS\\ViewModels\\LoginViewModel.cs",
+              "RelativeToolTip": "ViewModels\\LoginViewModel.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAkwGkAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-07T08:18:57.736Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainPage.xaml",
+              "DocumentMoniker": "C:\\_SPS\\Views\\MainPage.xaml",
+              "RelativeDocumentMoniker": "Views\\MainPage.xaml",
+              "ToolTip": "C:\\_SPS\\Views\\MainPage.xaml",
+              "RelativeToolTip": "Views\\MainPage.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-12-07T08:19:21.893Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "PetDetailViewModel.cs",
+              "DocumentMoniker": "C:\\_SPS\\ViewModels\\PetDetailViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\PetDetailViewModel.cs",
+              "ToolTip": "C:\\_SPS\\ViewModels\\PetDetailViewModel.cs",
+              "RelativeToolTip": "ViewModels\\PetDetailViewModel.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAAgwD0AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-07T08:01:33.673Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AddPetViewModel.cs",
+              "DocumentMoniker": "C:\\_SPS\\ViewModels\\AddPetViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\AddPetViewModel.cs",
+              "ToolTip": "C:\\_SPS\\ViewModels\\AddPetViewModel.cs",
+              "RelativeToolTip": "ViewModels\\AddPetViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAABLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-07T05:53:07.889Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AppShell.xaml.cs",
+              "DocumentMoniker": "C:\\_SPS\\AppShell.xaml.cs",
+              "RelativeDocumentMoniker": "AppShell.xaml.cs",
+              "ToolTip": "C:\\_SPS\\AppShell.xaml.cs",
+              "RelativeToolTip": "AppShell.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-07T08:18:44.504Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "MyUploadsPage.xaml.cs",
+              "DocumentMoniker": "C:\\_SPS\\Views\\MyUploadsPage.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\MyUploadsPage.xaml.cs",
+              "ToolTip": "C:\\_SPS\\Views\\MyUploadsPage.xaml.cs",
+              "RelativeToolTip": "Views\\MyUploadsPage.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-07T08:17:37.949Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AndroidManifest.xml",
+              "DocumentMoniker": "C:\\_SPS\\Platforms\\Android\\AndroidManifest.xml",
+              "RelativeDocumentMoniker": "Platforms\\Android\\AndroidManifest.xml",
+              "ToolTip": "C:\\_SPS\\Platforms\\Android\\AndroidManifest.xml",
+              "RelativeToolTip": "Platforms\\Android\\AndroidManifest.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2025-12-07T08:04:07.038Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "UserModel.cs",
+              "DocumentMoniker": "C:\\_SPS\\Models\\UserModel.cs",
+              "RelativeDocumentMoniker": "Models\\UserModel.cs",
+              "ToolTip": "C:\\_SPS\\Models\\UserModel.cs",
+              "RelativeToolTip": "Models\\UserModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-07T05:48:26.114Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

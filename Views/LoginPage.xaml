@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="_SPS.Views.LoginPage"
+             xmlns:viewmodels="clr-namespace:_SPS.ViewModels"
+             Title="로그인">
+
+    <ContentPage.BindingContext>
+        <viewmodels:LoginViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="25" Padding="30,0" VerticalOptions="Center">
+
+            <Label 
+                Text="SPS 로그인"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+            <Entry
+                Placeholder="이메일 (test@example.com)"
+                Text="{Binding Email}"
+                Keyboard="Email" />
+
+            <Entry
+                Placeholder="비밀번호"
+                Text="{Binding Password}"
+                IsPassword="True" />
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Blue" />
+
+            <Button
+                Text="로그인"
+                Command="{Binding LoginCommand}"
+                IsEnabled="{Binding CanExecute}" />
+
+            <Button
+                Text="새 계정 만들기 (회원가입)"
+                Command="{Binding NavigateToRegisterCommand}"
+                BackgroundColor="Gray"
+                IsEnabled="{Binding CanExecute}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

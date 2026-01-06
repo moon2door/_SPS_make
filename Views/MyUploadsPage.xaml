@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="_SPS.Views.MyUploadsPage"
+             xmlns:viewmodels="clr-namespace:_SPS.ViewModels"
+             xmlns:models="clr-namespace:_SPS.Models"
+             Title="내가 쓴 글 목록">
+
+    <ContentPage.BindingContext>
+        <viewmodels:MyUploadsViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="Auto, *">
+        <Label Grid.Row="0" Text="내가 등록한 동물들" FontSize="20" FontAttributes="Bold" Margin="20,20,20,10"/>
+
+        <ActivityIndicator Grid.Row="1" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Blue" VerticalOptions="Center"/>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding MyPets}" Margin="15">
+            <CollectionView.EmptyView>
+                <Label Text="아직 등록한 글이 없습니다." HorizontalOptions="Center" VerticalOptions="Center" TextColor="Gray"/>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:PetModel">
+                    <Frame Margin="0,5" Padding="10" CornerRadius="10" BorderColor="LightGray" HasShadow="True">
+                        <Grid ColumnDefinitions="80, *, Auto" ColumnSpacing="10">
+                            <Image Grid.Column="0" Source="{Binding ImageUrl}" Aspect="AspectFill" HeightRequest="80" WidthRequest="80" BackgroundColor="#eee"/>
+
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="3">
+                                <Label Text="{Binding Name}" 
+                                       FontSize="18" 
+                                       FontAttributes="Bold" 
+                                       TextColor="Black"/>
+
+                                <Label Text="{Binding Species}" TextColor="Gray"/>
+                                <Label Text="{Binding Location}" FontSize="11" TextColor="Gray" LineBreakMode="TailTruncation"/>
+                            </VerticalStackLayout>
+
+                            <Button Grid.Column="2" 
+                                    Text="관리 >" 
+                                    TextColor="White" 
+                                    BackgroundColor="#2D2B55"
+                                    HeightRequest="40"
+                                    FontSize="14"
+                                    VerticalOptions="Center"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MyUploadsViewModel}}, Path=GoToDetailCommand}"
+                                    CommandParameter="{Binding .}"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="_SPS.Views.MainPage"
+             xmlns:viewmodels="clr-namespace:_SPS.ViewModels"
+             xmlns:models="clr-namespace:_SPS.Models"
+             Title="홈">
+
+    <ContentPage.BindingContext>
+        <viewmodels:MainViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="📂 내 글" Command="{Binding NavigateToMyUploadsCommand}" />
+        <ToolbarItem Text="➕ 추가" Command="{Binding NavigateToAddPetCommand}" />
+        <ToolbarItem Text="로그아웃" Command="{Binding LogoutCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto, Auto, *">
+
+        <VerticalStackLayout Grid.Row="0" Padding="20" Spacing="5" BackgroundColor="#f0f0f0">
+            <Label Text="보호 중인 동물들" FontSize="22" FontAttributes="Bold" TextColor="Black"/>
+            <Label Text="{Binding UserEmail, StringFormat='사용자: {0}'}" FontSize="14" TextColor="Gray"/>
+        </VerticalStackLayout>
+
+        <Border Grid.Row="1" Margin="10" Padding="10" StrokeShape="RoundRectangle 10" BackgroundColor="White" Stroke="LightGray">
+            <VerticalStackLayout Spacing="10">
+
+                <Button Text="🔽 상세 필터 (열기/닫기)" 
+                        TextColor="Blue" 
+                        BackgroundColor="Transparent"
+                        Command="{Binding ToggleFilterCommand}"/>
+
+                <VerticalStackLayout IsVisible="{Binding IsFilterVisible}" Spacing="5" Padding="5">
+                    <Grid ColumnDefinitions="*,*,*">
+                        <Entry Grid.Column="0" Placeholder="품종" Text="{Binding FilterBreed}"/>
+                        <Entry Grid.Column="1" Placeholder="나이" Text="{Binding FilterAge}" Keyboard="Numeric"/>
+                        <Entry Grid.Column="2" Placeholder="상태" Text="{Binding FilterCondition}"/>
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Grid.Column="0" Text="검색 적용" Command="{Binding ApplyFilterCommand}" BackgroundColor="#2D2B55"/>
+                        <Button Grid.Column="1" Text="초기화" Command="{Binding ResetFilterCommand}" BackgroundColor="Gray"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+
+        <ActivityIndicator Grid.Row="2" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" 
+                           Color="Blue" VerticalOptions="Center" HorizontalOptions="Center" />
+
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Pets}" SelectionMode="None" Margin="10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:PetModel">
+                    <Frame Margin="0,5" Padding="10" CornerRadius="15" HasShadow="True" BorderColor="LightGray">
+                        <Grid ColumnDefinitions="80, *, Auto" ColumnSpacing="10">
+
+                            <Frame Grid.Column="0" Padding="0" CornerRadius="10" IsClippedToBounds="True" HeightRequest="80" WidthRequest="80">
+                                <Image Source="{Binding ImageUrl}" Aspect="AspectFill" HeightRequest="80" WidthRequest="80" BackgroundColor="LightGray"/>
+                            </Frame>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
+                                <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="Black"/>
+                                <Label Text="{Binding Species, StringFormat='품종: {0}'}" TextColor="#555"/>
+                                <Label Text="{Binding Age, StringFormat='나이: {0}살'}" TextColor="#555"/>
+                                <Label Text="{Binding Location, StringFormat='📍 {0}'}" FontSize="11" TextColor="Gray" LineBreakMode="TailTruncation"/>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="2" Spacing="10" VerticalOptions="Center">
+                                <Button Text="📞" 
+                                        FontSize="18"
+                                        WidthRequest="50" HeightRequest="40"
+                                        Padding="0"
+                                        BackgroundColor="#6750A4"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=CallOwnerCommand}"
+                                        CommandParameter="{Binding Contact}"/>
+
+                                <Button Text="＞" 
+                                        FontSize="18"
+                                        WidthRequest="50" HeightRequest="40"
+                                        Padding="0"
+                                        BackgroundColor="Transparent" TextColor="Gray"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=GoToDetailCommand}"
+                                        CommandParameter="{Binding .}"/>
+                            </VerticalStackLayout>
+
+                        </Grid>
+
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=GoToDetailCommand}"
+                                CommandParameter="{Binding .}" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
