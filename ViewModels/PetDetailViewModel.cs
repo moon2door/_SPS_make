@@ -6,6 +6,7 @@ using Firebase.Auth.Providers;
 using Firebase.Database;
 using Firebase.Database.Query;
 using System.Collections.ObjectModel;
+using System.Net.Http;
 
 namespace _SPS.ViewModels
 {
@@ -18,6 +19,7 @@ namespace _SPS.ViewModels
         [ObservableProperty] private string name;
         [ObservableProperty] private string species;
         [ObservableProperty] private string gender;
+        [ObservableProperty] private string status;
         [ObservableProperty] private string age;
         [ObservableProperty] private string description;
         [ObservableProperty] private string weight;
@@ -65,6 +67,7 @@ namespace _SPS.ViewModels
 
                 // [추가] 성별 연결
                 Gender = value.Gender;
+                Status = value.Status;
 
                 Age = value.Age;
                 Description = value.Description;
@@ -124,6 +127,63 @@ namespace _SPS.ViewModels
                 await _dbClient.Child("Pets").Child(Pet.Key).DeleteAsync();
                 await Application.Current.MainPage.DisplayAlert("삭제됨", "삭제되었습니다.", "확인");
                 await Shell.Current.GoToAsync("..");
+            }
+        }
+
+        [RelayCommand]
+        private async Task SharePet()
+        {
+            if (Pet == null) return;
+
+            try
+            {
+                // 1. 공유할 텍스트 만들기 (해시태그 포함)
+                string shareText = $"[{Pet.Status}] 가족을 찾습니다!\n\n" +
+                                   $"🐶 이름: {Name}\n" +
+                                   $"🐕 견종: {Species}\n" +
+                                   $"📍 지역: {Location}\n" +
+                                   $"📝 특징: {Feature}\n\n" +
+                                   $"#유기견 #사지말고입양하세요 #강아지 #반려견 #{Species} #{Location}";
+
+                // 2. 이미지가 있는 경우 이미지를 다운로드해서 공유
+                string imagePath = null;
+                if (!string.IsNullOrEmpty(Pet.ImageUrl1))
+                {
+                    // 로딩 표시 같은 게 필요하면 여기서 IsBusy = true;
+                    using var client = new HttpClient();
+                    var imageBytes = await client.GetByteArrayAsync(Pet.ImageUrl1);
+
+                    // 캐시 폴더에 임시 파일로 저장
+                    imagePath = Path.Combine(FileSystem.CacheDirectory, "share_pet.png");
+                    File.WriteAllBytes(imagePath, imageBytes);
+                }
+
+                // 3. 공유 요청 실행
+                if (imagePath != null)
+                {
+                    // 이미지 + 텍스트 공유
+                    await Share.Default.RequestAsync(new ShareFileRequest
+                    {
+                        Title = "동물 정보 공유",
+                        File = new ShareFile(imagePath),
+                        PresentationSourceBounds = DeviceInfo.Platform == DevicePlatform.iOS && DeviceInfo.Idiom == DeviceIdiom.Tablet
+                                                    ? new Rect(0, 20, 0, 0) // 아이패드 대응
+                                                    : Rect.Zero
+                    });
+                }
+                else
+                {
+                    // 이미지가 없으면 텍스트만 공유
+                    await Share.Default.RequestAsync(new ShareTextRequest
+                    {
+                        Text = shareText,
+                        Title = "동물 정보 공유"
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("오류", "공유 중 문제가 발생했습니다: " + ex.Message, "확인");
             }
         }
     }

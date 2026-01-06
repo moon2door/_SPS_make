@@ -34,54 +34,121 @@
 
             <VerticalStackLayout Spacing="10" Padding="20">
 
-                <StackLayout Orientation="Horizontal" Spacing="10">
-                    <Label Text="{Binding Name}" FontSize="28" FontAttributes="Bold" TextColor="Black"/>
-                    <Frame Padding="8,4" BackgroundColor="#E3F2FD" CornerRadius="5" BorderColor="Transparent" VerticalOptions="Center">
-                        <Label Text="{Binding Gender}" TextColor="#1976D2" FontSize="12" FontAttributes="Bold"/>
+                <StackLayout Orientation="Vertical" Spacing="5">
+
+                    <Frame HorizontalOptions="Start" Padding="0" BackgroundColor="#FFEBEE" BorderColor="#EF9A9A" CornerRadius="5" HasShadow="False">
+                        <Picker SelectedItem="{Binding Status}" 
+                                TextColor="#C62828" 
+                                FontSize="12" 
+                                FontAttributes="Bold"
+                                IsEnabled="{Binding CanEdit}" 
+                                Margin="10,0"
+                                Title="상태 선택">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>보호중 (Under Care)</x:String>
+                                    <x:String>실종 (Missing)</x:String>
+                                    <x:String>입양완료 (Adopted)</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
                     </Frame>
+
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Entry Text="{Binding Name}" 
+                               IsReadOnly="{Binding IsReadOnly}"
+                               FontSize="28" 
+                               FontAttributes="Bold" 
+                               TextColor="Black"
+                               Placeholder="이름"
+                               HorizontalOptions="FillAndExpand"/>
+
+                        <Frame Padding="0" BackgroundColor="#E3F2FD" CornerRadius="5" BorderColor="Transparent" VerticalOptions="Center" HasShadow="False">
+                            <Picker SelectedItem="{Binding Gender}" 
+                                    TextColor="#1976D2" 
+                                    FontSize="12" 
+                                    FontAttributes="Bold"
+                                    IsEnabled="{Binding CanEdit}"
+                                    Margin="10,0"
+                                    Title="성별 선택">
+                                <Picker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>수컷 (Male)</x:String>
+                                        <x:String>암컷 (Female)</x:String>
+                                        <x:String>알 수 없음</x:String>
+                                    </x:Array>
+                                </Picker.ItemsSource>
+                            </Picker>
+                        </Frame>
+                    </StackLayout>
                 </StackLayout>
 
-                <Label Text="{Binding Species}" FontSize="18" TextColor="Gray" />
+                <Entry Text="{Binding Species}" 
+                       IsReadOnly="{Binding IsReadOnly}"
+                       FontSize="18" 
+                       TextColor="Gray"
+                       Placeholder="견종"/>
 
                 <BoxView HeightRequest="1" Color="LightGray" />
 
                 <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto, Auto" RowSpacing="10" ColumnSpacing="15">
 
-                    <Label Grid.Row="0" Grid.Column="0" Text="나이" FontAttributes="Bold" />
-                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding Age}" />
+                    <Label Grid.Row="0" Grid.Column="0" Text="나이" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Age}" IsReadOnly="{Binding IsReadOnly}" Placeholder="나이 입력"/>
 
-                    <Label Grid.Row="1" Grid.Column="0" Text="몸무게" FontAttributes="Bold" />
-                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Weight}" />
+                    <Label Grid.Row="1" Grid.Column="0" Text="몸무게" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Weight}" IsReadOnly="{Binding IsReadOnly}" Placeholder="몸무게 입력"/>
 
-                    <Label Grid.Row="2" Grid.Column="0" Text="상태" FontAttributes="Bold" />
-                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding Condition}" />
+                    <Label Grid.Row="2" Grid.Column="0" Text="상태" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <Entry Grid.Row="2" Grid.Column="1" Text="{Binding Condition}" IsReadOnly="{Binding IsReadOnly}" Placeholder="건강 상태 등"/>
 
-                    <Label Grid.Row="3" Grid.Column="0" Text="특징" FontAttributes="Bold" />
-                    <Label Grid.Row="3" Grid.Column="1" Text="{Binding Feature}" />
+                    <Label Grid.Row="3" Grid.Column="0" Text="특징" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <Entry Grid.Row="3" Grid.Column="1" Text="{Binding Feature}" IsReadOnly="{Binding IsReadOnly}" Placeholder="특징 입력"/>
 
                 </Grid>
 
                 <Frame BackgroundColor="#FFF3E0" BorderColor="#FFB74D" Padding="15" Margin="0,10">
                     <VerticalStackLayout>
                         <Label Text="📍 발견/보호 위치" TextColor="#F57C00" FontAttributes="Bold" Margin="0,0,0,5"/>
-                        <Label Text="{Binding Location}" TextColor="Black"/>
+                        <Entry Text="{Binding Location}" 
+                               IsReadOnly="{Binding IsReadOnly}"
+                               TextColor="Black"
+                               Placeholder="위치 정보 수정"/>
                     </VerticalStackLayout>
                 </Frame>
+
+                <Button Text="📢 SNS 공유하기" 
+                        Command="{Binding SharePetCommand}"
+                        BackgroundColor="#3b5998" 
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        Margin="0,0,0,15"
+                        HeightRequest="50"/>
 
                 <Frame BackgroundColor="#E8F5E9" BorderColor="#4CAF50" Padding="15">
                     <VerticalStackLayout>
                         <Label Text="📞 연락처" TextColor="#2E7D32" FontAttributes="Bold" Margin="0,0,0,5"/>
-                        <Label Text="{Binding Contact}" TextColor="Black" FontSize="16"/>
+                        <Entry Text="{Binding Contact}" 
+                               IsReadOnly="{Binding IsReadOnly}"
+                               TextColor="Black" 
+                               FontSize="16"
+                               Keyboard="Telephone"
+                               Placeholder="연락처 수정"/>
                     </VerticalStackLayout>
                 </Frame>
 
                 <Label Text="추가 설명" FontAttributes="Bold" Margin="0,10,0,0"/>
-                <Label Text="{Binding Description}" />
+
+                <Editor Text="{Binding Description}" 
+                        IsReadOnly="{Binding IsReadOnly}"
+                        AutoSize="TextChanges"
+                        Placeholder="상세 내용을 입력하세요."/>
 
             </VerticalStackLayout>
 
             <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Padding="20" IsVisible="{Binding CanEdit}">
-                <Button Grid.Column="0" Text="수정" Command="{Binding UpdatePetCommand}" BackgroundColor="Orange"/>
+                <Button Grid.Column="0" Text="수정 완료" Command="{Binding UpdatePetCommand}" BackgroundColor="Orange"/>
                 <Button Grid.Column="1" Text="삭제" Command="{Binding DeletePetCommand}" BackgroundColor="Red"/>
             </Grid>
 

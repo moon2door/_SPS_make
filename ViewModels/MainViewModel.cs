@@ -19,6 +19,7 @@ namespace _SPS.ViewModels
         [ObservableProperty] private string searchSpecies;  // 견종 검색
         [ObservableProperty] private string searchLocation; // 지역 검색
         [ObservableProperty] private string searchGender = "전체";   // 성별 필터 (전체/수컷/암컷)
+        [ObservableProperty] private string searchStatus = "전체";
 
         // 화면에 보여줄 목록
         public ObservableCollection<PetModel> Pets { get; } = new();
@@ -105,6 +106,13 @@ namespace _SPS.ViewModels
                 filtered = filtered.Where(p => p.Gender != null && p.Gender.Contains(SearchGender));
             }
 
+            if (!string.IsNullOrWhiteSpace(SearchStatus) && SearchStatus != "전체")
+            {
+                // "보호중 (Under Care)" 처럼 괄호가 있을 수 있으므로 Contains나 StartsWith 사용
+                // 여기서는 앞 두 글자(보호중, 실종)만 맞아도 되게 Contains로 처리
+                filtered = filtered.Where(p => p.Status != null && p.Status.Contains(SearchStatus.Split(' ')[0]));
+            }
+
             // 5. 결과 업데이트 (최신순 정렬)
             UpdateList(filtered.Reverse().ToList());
         }
@@ -116,6 +124,7 @@ namespace _SPS.ViewModels
             SearchSpecies = "";
             SearchLocation = "";
             SearchGender = "전체";
+            SearchStatus = "전체";
             SearchPets(); // 전체 목록 다시 보여주기
         }
 

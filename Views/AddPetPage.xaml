@@ -78,6 +78,21 @@
                     </Picker>
                 </Grid>
             </Frame>
+            
+            <Frame Padding="15,5" BorderColor="LightGray" CornerRadius="10" BackgroundColor="#F5F5F5" HasShadow="False">
+                <Grid ColumnDefinitions="Auto, *">
+                    <Label Grid.Column="0" Text="상태" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" TextColor="#333" Margin="0,0,10,0"/>
+                    <Picker Grid.Column="1" SelectedItem="{Binding Status}" TextColor="Black" FontSize="16" HorizontalOptions="FillAndExpand">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>보호중 (Under Care)</x:String>
+                                <x:String>실종 (Missing)</x:String>
+                                <x:String>입양완료 (Adopted)</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </Grid>
+            </Frame>
 
             <Entry Placeholder="나이 (예: 3살)" Text="{Binding Age}" Keyboard="Numeric"/>
 

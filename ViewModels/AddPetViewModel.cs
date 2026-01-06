@@ -23,6 +23,7 @@ namespace _SPS.ViewModels
 
         [ObservableProperty] private string age;
         [ObservableProperty] private string description;
+        [ObservableProperty] private string status = "보호중";
 
         // [추가 정보]
         [ObservableProperty] private string weight;
@@ -284,10 +285,8 @@ namespace _SPS.ViewModels
                 {
                     Name = Name,
                     Species = Species,
-
-                    // [추가] 성별 저장
                     Gender = Gender,
-
+                    Status = Status,
                     Age = Age,
                     Weight = Weight,
                     Condition = Condition,
