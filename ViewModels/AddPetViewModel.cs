@@ -6,26 +6,19 @@ using Firebase.Auth.Providers;
 using Firebase.Database;
 using Firebase.Database.Query;
 using Firebase.Storage;
-using Microsoft.Maui.Devices.Sensors;
 using System.Text;
-using System.Text.Json; // JSON 처리를 위한 필수 네임스페이스
+using System.Text.Json; 
 
 namespace _SPS.ViewModels
 {
     public partial class AddPetViewModel : ObservableObject
     {
-        // [기본 정보]
         [ObservableProperty] private string name;
         [ObservableProperty] private string species;
-
-        // [추가된 속성] 성별 (Male / Female 등)
         [ObservableProperty] private string gender;
-
         [ObservableProperty] private string age;
         [ObservableProperty] private string description;
-        [ObservableProperty] private string status = "보호중";
-
-        // [추가 정보]
+        [ObservableProperty] private string status = "Protected";
         [ObservableProperty] private string weight;
         [ObservableProperty] private string condition;
         [ObservableProperty] private string feature;
@@ -34,13 +27,11 @@ namespace _SPS.ViewModels
 
         [ObservableProperty] private bool isBusy;
 
-        // [수정] 사진 4장을 위한 이미지 소스 (화면 표시용)
-        [ObservableProperty] private ImageSource petImageSource1; // 전면
-        [ObservableProperty] private ImageSource petImageSource2; // 측면
-        [ObservableProperty] private ImageSource petImageSource3; // 자유
-        [ObservableProperty] private ImageSource petImageSource4; // 보호자와 함께
+        [ObservableProperty] private ImageSource petImageSource1; 
+        [ObservableProperty] private ImageSource petImageSource2;
+        [ObservableProperty] private ImageSource petImageSource3;
+        [ObservableProperty] private ImageSource petImageSource4;
 
-        // [수정] 실제 파일 데이터를 담아둘 변수 4개
         private FileResult _file1;
         private FileResult _file2;
         private FileResult _file3;
@@ -49,8 +40,7 @@ namespace _SPS.ViewModels
         private readonly FirebaseClient _dbClient;
         private readonly FirebaseAuthClient _authClient;
 
-        // ★ [중요] 여기에 본인의 실제 Gemini API 키를 입력하세요!
-        private const string GeminiApiKey = "AIzaSyBsI2Z_CsRTO_-R0-bS4dee33Tsfs-pOdg";
+        private const string GeminiApiKey = "AIzaSyDqJiZwvCFsb2t8jsYK2TUHMNENDdenz-w";
 
         public AddPetViewModel()
         {
@@ -64,7 +54,6 @@ namespace _SPS.ViewModels
             _authClient = new FirebaseAuthClient(config);
         }
 
-        // [수정] 사진 선택 기능 (몇 번째 칸인지 slot으로 구분)
         [RelayCommand]
         private async Task PickImage(string slot)
         {
@@ -78,30 +67,29 @@ namespace _SPS.ViewModels
 
                     switch (slot)
                     {
-                        case "1": // 전면 사진 (AI 분석 대상)
+                        case "1": 
                             _file1 = result;
                             PetImageSource1 = imgSource;
 
-                            // 1번 사진일 때만 AI 분석 여부 묻기
                             bool answer = await Application.Current.MainPage.DisplayAlert(
-                                "AI 분석", "이 사진(전면)으로 견종을 분석할까요?", "예", "아니요");
+                                "AI Analysis", "Shall we analyze the breed using this photo (front view)?", "Yes", "No");
                             if (answer)
                             {
                                 await AnalyzeImageWithGemini(result);
                             }
                             break;
 
-                        case "2": // 측면
+                        case "2": 
                             _file2 = result;
                             PetImageSource2 = imgSource;
                             break;
 
-                        case "3": // 자유
+                        case "3": 
                             _file3 = result;
                             PetImageSource3 = imgSource;
                             break;
 
-                        case "4": // 보호자와 함께
+                        case "4": 
                             _file4 = result;
                             PetImageSource4 = imgSource;
                             break;
@@ -110,11 +98,10 @@ namespace _SPS.ViewModels
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("오류", "사진 선택 실패: " + ex.Message, "확인");
+                await Application.Current.MainPage.DisplayAlert("Error", "Photo selection failed: " + ex.Message, "Confirmation");
             }
         }
 
-        // [핵심 기능] Gemini에게 사진 보내고 정보 받아오기
         private async Task AnalyzeImageWithGemini(FileResult file)
         {
             if (IsBusy) return;
@@ -122,14 +109,12 @@ namespace _SPS.ViewModels
 
             try
             {
-                // 1. 이미지를 데이터로 변환
                 using var stream = await file.OpenReadAsync();
                 using var memoryStream = new MemoryStream();
                 await stream.CopyToAsync(memoryStream);
                 byte[] imageBytes = memoryStream.ToArray();
                 string base64Image = Convert.ToBase64String(imageBytes);
 
-                // 2. 프롬프트 설정 - JSON 형식 요청
                 var promptText = "Analyze the dog in this photo and return ONLY a JSON object in English. Do not say anything else.\n\n" +
                                  "Format:\n" +
                                  "{\n" +
@@ -140,7 +125,6 @@ namespace _SPS.ViewModels
                                  "\"feature\": \"Notable features in English (e.g., Floppy ears)\"\n" +
                                  "}";
 
-                // 3. API 요청 본문
                 var requestBody = new
                 {
                     contents = new[]
@@ -161,7 +145,6 @@ namespace _SPS.ViewModels
                     }
                 };
 
-                // 4. API 호출
                 using var client = new HttpClient();
                 var jsonContent = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
                 var response = await client.PostAsync($"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key={GeminiApiKey}", jsonContent);
@@ -187,26 +170,25 @@ namespace _SPS.ViewModels
 
                         if (petData != null)
                         {
-                            // 6. 화면에 값 자동 입력
                             Species = petData.breed;
                             Age = petData.age;
                             Weight = petData.weight;
                             Condition = petData.condition;
                             Feature = petData.feature;
 
-                            await Application.Current.MainPage.DisplayAlert("성공", "AI 분석 완료!", "확인");
+                            await Application.Current.MainPage.DisplayAlert("Success", "AI Analysis complete!", "Confirmation");
                         }
                     }
                 }
                 else
                 {
                     var errorMsg = await response.Content.ReadAsStringAsync();
-                    await Application.Current.MainPage.DisplayAlert("API 오류", $"응답 코드: {response.StatusCode}\n{errorMsg}", "확인");
+                    await Application.Current.MainPage.DisplayAlert("API Error", $"Response code: {response.StatusCode}\n{errorMsg}", "Confirmation");
                 }
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("분석 실패", ex.Message, "확인");
+                await Application.Current.MainPage.DisplayAlert("Analysis failed", ex.Message, "Confirmation");
             }
             finally
             {
@@ -241,12 +223,12 @@ namespace _SPS.ViewModels
                 }
                 else
                 {
-                    Location = "위치 권한이 없습니다.";
+                    Location = "You have no location permissions.";
                 }
             }
             catch
             {
-                Location = "위치를 찾을 수 없습니다.";
+                Location = "Location not found.";
             }
             finally
             {
@@ -259,10 +241,9 @@ namespace _SPS.ViewModels
         {
             if (IsBusy) return;
 
-            // [수정] 유효성 검사: 이름, 종, 성별 필수
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Species) || string.IsNullOrWhiteSpace(Gender))
             {
-                await Application.Current.MainPage.DisplayAlert("알림", "이름, 종, 성별은 필수 입력 항목입니다.", "확인");
+                await Application.Current.MainPage.DisplayAlert("Notice", "Name, species, and gender are required fields.", "Confirmation");
                 return;
             }
 
@@ -271,11 +252,10 @@ namespace _SPS.ViewModels
             {
                 if (_authClient.User == null)
                 {
-                    await Application.Current.MainPage.DisplayAlert("오류", "로그인 정보가 없습니다.", "확인");
+                    await Application.Current.MainPage.DisplayAlert("Error", "You don't have any login information.", "Confirmation");
                     return;
                 }
 
-                // [수정] 4개의 이미지를 각각 업로드 (Helper 메서드 사용)
                 string url1 = await UploadImage(_file1);
                 string url2 = await UploadImage(_file2);
                 string url3 = await UploadImage(_file3);
@@ -296,7 +276,6 @@ namespace _SPS.ViewModels
                     Description = Description,
                     OwnerId = _authClient.User.Uid,
 
-                    // [수정] 4개의 이미지 URL 저장
                     ImageUrl1 = url1,
                     ImageUrl2 = url2,
                     ImageUrl3 = url3,
@@ -304,12 +283,12 @@ namespace _SPS.ViewModels
                 };
 
                 await _dbClient.Child("Pets").PostAsync(newPet);
-                await Application.Current.MainPage.DisplayAlert("성공", "등록되었습니다.", "확인");
+                await Application.Current.MainPage.DisplayAlert("Success", "Registered.", "Confirmation");
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("오류", ex.Message, "확인");
+                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Confirmation");
             }
             finally
             {
@@ -317,20 +296,17 @@ namespace _SPS.ViewModels
             }
         }
 
-        // [추가] 이미지 업로드 헬퍼 메서드
         private async Task<string> UploadImage(FileResult file)
         {
-            if (file == null) return ""; // 파일이 없으면 빈 문자열 반환
+            if (file == null) return ""; 
 
             using var stream = await file.OpenReadAsync();
             var fileName = $"{Guid.NewGuid()}.png";
 
-            // Firebase Storage에 업로드하고 다운로드 URL 반환
             return await new FirebaseStorage(Constants.FirebaseStorageBucket)
                 .Child("PetImages").Child(fileName).PutAsync(stream);
         }
 
-        // [내부 클래스] JSON 데이터를 받기 위한 그릇
         public class GeminiPetData
         {
             public string breed { get; set; }

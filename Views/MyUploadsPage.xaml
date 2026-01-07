@@ -4,20 +4,20 @@
              x:Class="_SPS.Views.MyUploadsPage"
              xmlns:viewmodels="clr-namespace:_SPS.ViewModels"
              xmlns:models="clr-namespace:_SPS.Models"
-             Title="내가 쓴 글 목록">
+             Title="The article I wrote">
 
     <ContentPage.BindingContext>
         <viewmodels:MyUploadsViewModel />
     </ContentPage.BindingContext>
 
     <Grid RowDefinitions="Auto, *">
-        <Label Grid.Row="0" Text="내가 등록한 동물들" FontSize="20" FontAttributes="Bold" Margin="20,20,20,10"/>
+        <Label Grid.Row="0" Text="Animals I've registered" FontSize="20" FontAttributes="Bold" Margin="20,20,20,10"/>
 
         <ActivityIndicator Grid.Row="1" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Blue" VerticalOptions="Center"/>
 
         <CollectionView Grid.Row="1" ItemsSource="{Binding MyPets}" Margin="15">
             <CollectionView.EmptyView>
-                <Label Text="아직 등록한 글이 없습니다." HorizontalOptions="Center" VerticalOptions="Center" TextColor="Gray"/>
+                <Label Text="You haven't registered any posts yet." HorizontalOptions="Center" VerticalOptions="Center" TextColor="Gray"/>
             </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:PetModel">
@@ -36,7 +36,7 @@
                             </VerticalStackLayout>
 
                             <Button Grid.Column="2" 
-                                    Text="관리 >" 
+                                    Text="Management >" 
                                     TextColor="White" 
                                     BackgroundColor="#2D2B55"
                                     HeightRequest="40"

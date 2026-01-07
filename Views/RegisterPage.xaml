@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="_SPS.Views.RegisterPage"
              xmlns:viewmodels="clr-namespace:_SPS.ViewModels"
-             Title="회원가입">
+             Title="Sign Up">
 
     <ContentPage.BindingContext>
         <viewmodels:RegisterViewModel />
@@ -13,29 +13,29 @@
         <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center">
 
             <Label 
-                Text="새 계정 만들기"
+                Text="Create a new account"
                 FontSize="28"
                 HorizontalOptions="Center"
                 FontAttributes="Bold"/>
 
             <Entry
-                Placeholder="닉네임"
+                Placeholder="Nickname"
                 Text="{Binding Nickname}" />
 
             <Entry
-                Placeholder="이메일"
+                Placeholder="Email"
                 Text="{Binding Email}"
                 Keyboard="Email" />
 
             <Entry
-                Placeholder="비밀번호 (6자리 이상)"
+                Placeholder="Password (at least 6 characters)"
                 Text="{Binding Password}"
                 IsPassword="True" />
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Blue" />
 
             <Button
-                Text="가입하기"
+                Text="Sign up"
                 Command="{Binding RegisterCommand}"
                 IsEnabled="{Binding CanExecute}"
                 HeightRequest="50" />

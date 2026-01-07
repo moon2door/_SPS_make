@@ -6,12 +6,11 @@ using Firebase.Auth.Providers;
 using Firebase.Database;
 using Firebase.Database.Query;
 using System.Collections.ObjectModel;
-using System.Net.Http;
 
 namespace _SPS.ViewModels
 {
     [QueryProperty(nameof(Pet), "Pet")]
-    [QueryProperty(nameof(IsReadOnly), "IsReadOnly")] // ★ [추가] 읽기 전용 여부 받기
+    [QueryProperty(nameof(IsReadOnly), "IsReadOnly")] 
     public partial class PetDetailViewModel : ObservableObject
     {
         [ObservableProperty] private PetModel pet;
@@ -31,14 +30,12 @@ namespace _SPS.ViewModels
         [ObservableProperty]
         private ObservableCollection<string> petImages = new();
 
-        // 내가 쓴 글인지 확인
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(CanEdit))] // 값이 바뀌면 CanEdit도 다시 계산
+        [NotifyPropertyChangedFor(nameof(CanEdit))] 
         private bool isOwner;
 
-        // ★ [추가] 읽기 전용 모드인지 확인 (Home에서 오면 True)
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(CanEdit))] // 값이 바뀌면 CanEdit도 다시 계산
+        [NotifyPropertyChangedFor(nameof(CanEdit))] 
         private bool isReadOnly;
 
         public bool CanEdit => IsOwner && !IsReadOnly;
@@ -64,11 +61,8 @@ namespace _SPS.ViewModels
             {
                 Name = value.Name;
                 Species = value.Species;
-
-                // [추가] 성별 연결
                 Gender = value.Gender;
                 Status = value.Status;
-
                 Age = value.Age;
                 Description = value.Description;
                 Weight = value.Weight;
@@ -76,15 +70,12 @@ namespace _SPS.ViewModels
                 Feature = value.Feature;
                 Contact = value.Contact;
                 Location = value.Location;
-
-                // [추가] 4장의 사진 중 있는 것만 골라서 리스트에 담기
                 PetImages.Clear();
                 if (!string.IsNullOrEmpty(value.ImageUrl1)) PetImages.Add(value.ImageUrl1);
                 if (!string.IsNullOrEmpty(value.ImageUrl2)) PetImages.Add(value.ImageUrl2);
                 if (!string.IsNullOrEmpty(value.ImageUrl3)) PetImages.Add(value.ImageUrl3);
                 if (!string.IsNullOrEmpty(value.ImageUrl4)) PetImages.Add(value.ImageUrl4);
 
-                // 만약 사진이 한 장도 없다면 기본 이미지(플레이스홀더)라도 하나 넣음
                 if (PetImages.Count == 0) PetImages.Add("dotnet_bot.png");
 
                 var myUid = _authClient.User?.Uid;
@@ -95,9 +86,9 @@ namespace _SPS.ViewModels
         [RelayCommand]
         private async Task UpdatePet()
         {
-            if (!CanEdit) return; // 이중 안전장치
+            if (!CanEdit) return; 
 
-            bool confirm = await Application.Current.MainPage.DisplayAlert("수정", "정보를 수정하시겠습니까?", "예", "아니요");
+            bool confirm = await Application.Current.MainPage.DisplayAlert("Revision", "Would you like to modify the information?", "Yes", "No");
             if (confirm)
             {
                 Pet.Name = Name;
@@ -111,7 +102,7 @@ namespace _SPS.ViewModels
                 Pet.Location = Location;
 
                 await _dbClient.Child("Pets").Child(Pet.Key).PutAsync(Pet);
-                await Application.Current.MainPage.DisplayAlert("성공", "수정되었습니다.", "확인");
+                await Application.Current.MainPage.DisplayAlert("Success", "It has been revised.", "Confirmation");
                 await Shell.Current.GoToAsync("..");
             }
         }
@@ -119,13 +110,13 @@ namespace _SPS.ViewModels
         [RelayCommand]
         private async Task DeletePet()
         {
-            if (!CanEdit) return; // 이중 안전장치
+            if (!CanEdit) return; 
 
-            bool confirm = await Application.Current.MainPage.DisplayAlert("삭제", "정말 삭제하시겠습니까?", "삭제", "취소");
+            bool confirm = await Application.Current.MainPage.DisplayAlert("Delete", "Are you sure you want to delete this?", "Delete", "Cancle");
             if (confirm)
             {
                 await _dbClient.Child("Pets").Child(Pet.Key).DeleteAsync();
-                await Application.Current.MainPage.DisplayAlert("삭제됨", "삭제되었습니다.", "확인");
+                await Application.Current.MainPage.DisplayAlert("Deleted", "It has been deleted.", "Confirmation");
                 await Shell.Current.GoToAsync("..");
             }
         }
@@ -137,37 +128,31 @@ namespace _SPS.ViewModels
 
             try
             {
-                // 1. 공유할 텍스트 만들기 (해시태그 포함)
-                string shareText = $"[{Pet.Status}] 가족을 찾습니다!\n\n" +
-                                   $"🐶 이름: {Name}\n" +
-                                   $"🐕 견종: {Species}\n" +
-                                   $"📍 지역: {Location}\n" +
-                                   $"📝 특징: {Feature}\n\n" +
-                                   $"#유기견 #사지말고입양하세요 #강아지 #반려견 #{Species} #{Location}";
+                string shareText = $"[{Pet.Status}] Looking for family!\n\n" +
+                                   $"Name: {Name}\n" +
+                                   $"Breed: {Species}\n" +
+                                   $"Region: {Location}\n" +
+                                   $"Features: {Feature}\n\n" +
+                                   $"#stray dog #Poppy #companion dog #{Species} #{Location}";
 
-                // 2. 이미지가 있는 경우 이미지를 다운로드해서 공유
                 string imagePath = null;
                 if (!string.IsNullOrEmpty(Pet.ImageUrl1))
                 {
-                    // 로딩 표시 같은 게 필요하면 여기서 IsBusy = true;
                     using var client = new HttpClient();
                     var imageBytes = await client.GetByteArrayAsync(Pet.ImageUrl1);
 
-                    // 캐시 폴더에 임시 파일로 저장
                     imagePath = Path.Combine(FileSystem.CacheDirectory, "share_pet.png");
                     File.WriteAllBytes(imagePath, imageBytes);
                 }
 
-                // 3. 공유 요청 실행
                 if (imagePath != null)
                 {
-                    // 이미지 + 텍스트 공유
                     await Share.Default.RequestAsync(new ShareFileRequest
                     {
-                        Title = "동물 정보 공유",
+                        Title = "Animal Information Sharing",
                         File = new ShareFile(imagePath),
                         PresentationSourceBounds = DeviceInfo.Platform == DevicePlatform.iOS && DeviceInfo.Idiom == DeviceIdiom.Tablet
-                                                    ? new Rect(0, 20, 0, 0) // 아이패드 대응
+                                                    ? new Rect(0, 20, 0, 0) 
                                                     : Rect.Zero
                     });
                 }
@@ -177,13 +162,13 @@ namespace _SPS.ViewModels
                     await Share.Default.RequestAsync(new ShareTextRequest
                     {
                         Text = shareText,
-                        Title = "동물 정보 공유"
+                        Title = "Animal Information Sharing"
                     });
                 }
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("오류", "공유 중 문제가 발생했습니다: " + ex.Message, "확인");
+                await Application.Current.MainPage.DisplayAlert("Error", "An issue occurred during sharing.: " + ex.Message, "Confirmation");
             }
         }
     }

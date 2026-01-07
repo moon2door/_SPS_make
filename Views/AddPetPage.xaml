@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="_SPS.Views.AddPetPage"
              xmlns:viewmodels="clr-namespace:_SPS.ViewModels"
-             Title="새 동물 등록">
+             Title="New Animal Registration">
 
     <ContentPage.BindingContext>
         <viewmodels:AddPetViewModel />
@@ -12,14 +12,14 @@
     <ScrollView>
         <VerticalStackLayout Spacing="15" Padding="20">
 
-            <Label Text="보호 동물 정보 입력" FontSize="20" FontAttributes="Bold" />
+            <Label Text="Enter Protected Animal Information" FontSize="20" FontAttributes="Bold" />
 
             <Grid RowDefinitions="150, 150" ColumnDefinitions="*, *" ColumnSpacing="10" RowSpacing="10">
 
                 <Frame Grid.Row="0" Grid.Column="0" Padding="0" IsClippedToBounds="True" BackgroundColor="#eee" CornerRadius="10">
                     <Grid>
                         <Image Source="{Binding PetImageSource1}" Aspect="AspectFill"/>
-                        <Label Text="📸 전면(AI)" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
+                        <Label Text="Front (AI Analysis)" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
                         <Button BackgroundColor="Transparent" Command="{Binding PickImageCommand}" CommandParameter="1"/>
                     </Grid>
                 </Frame>
@@ -27,7 +27,7 @@
                 <Frame Grid.Row="0" Grid.Column="1" Padding="0" IsClippedToBounds="True" BackgroundColor="#eee" CornerRadius="10">
                     <Grid>
                         <Image Source="{Binding PetImageSource2}" Aspect="AspectFill"/>
-                        <Label Text="📸 측면" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
+                        <Label Text="side" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
                         <Button BackgroundColor="Transparent" Command="{Binding PickImageCommand}" CommandParameter="2"/>
                     </Grid>
                 </Frame>
@@ -35,7 +35,7 @@
                 <Frame Grid.Row="1" Grid.Column="0" Padding="0" IsClippedToBounds="True" BackgroundColor="#eee" CornerRadius="10">
                     <Grid>
                         <Image Source="{Binding PetImageSource3}" Aspect="AspectFill"/>
-                        <Label Text="📸 자유" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
+                        <Label Text="free_1" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
                         <Button BackgroundColor="Transparent" Command="{Binding PickImageCommand}" CommandParameter="3"/>
                     </Grid>
                 </Frame>
@@ -43,19 +43,19 @@
                 <Frame Grid.Row="1" Grid.Column="1" Padding="0" IsClippedToBounds="True" BackgroundColor="#eee" CornerRadius="10">
                     <Grid>
                         <Image Source="{Binding PetImageSource4}" Aspect="AspectFill"/>
-                        <Label Text="📸 보호자와" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
+                        <Label Text="free_2" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
                         <Button BackgroundColor="Transparent" Command="{Binding PickImageCommand}" CommandParameter="4"/>
                     </Grid>
                 </Frame>
             </Grid>
 
-            <Entry Placeholder="이름 (예: 뽀삐)" Text="{Binding Name}" />
-            <Entry Placeholder="종 (예: 말티즈)" Text="{Binding Species}" />
+            <Entry Placeholder="Name (e.g., Poppie)" Text="{Binding Name}" />
+            <Entry Placeholder="Breed (e.g., Maltese)" Text="{Binding Species}" />
 
             <Frame Padding="15,5" BorderColor="LightGray" CornerRadius="10" BackgroundColor="#F5F5F5" HasShadow="False">
                 <Grid ColumnDefinitions="Auto, *">
                     <Label Grid.Column="0" 
-                           Text="성별" 
+                           Text="Gender" 
                            FontAttributes="Bold"
                            FontSize="16"
                            VerticalOptions="Center" 
@@ -63,16 +63,16 @@
                            Margin="0,0,10,0"/>
 
                     <Picker Grid.Column="1" 
-                            Title="선택해주세요" 
+                            Title="Select" 
                             SelectedItem="{Binding Gender}"
                             TextColor="Black"
                             TitleColor="Gray"
                             HorizontalOptions="FillAndExpand">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
-                                <x:String>수컷 (Male)</x:String>
-                                <x:String>암컷 (Female)</x:String>
-                                <x:String>알 수 없음</x:String>
+                                <x:String>Male</x:String>
+                                <x:String>Female</x:String>
+                                <x:String>Unknown</x:String>
                             </x:Array>
                         </Picker.ItemsSource>
                     </Picker>
@@ -81,33 +81,33 @@
             
             <Frame Padding="15,5" BorderColor="LightGray" CornerRadius="10" BackgroundColor="#F5F5F5" HasShadow="False">
                 <Grid ColumnDefinitions="Auto, *">
-                    <Label Grid.Column="0" Text="상태" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" TextColor="#333" Margin="0,0,10,0"/>
+                    <Label Grid.Column="0" Text="Status" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" TextColor="#333" Margin="0,0,10,0"/>
                     <Picker Grid.Column="1" SelectedItem="{Binding Status}" TextColor="Black" FontSize="16" HorizontalOptions="FillAndExpand">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
-                                <x:String>보호중 (Under Care)</x:String>
-                                <x:String>실종 (Missing)</x:String>
-                                <x:String>입양완료 (Adopted)</x:String>
+                                <x:String>Under Care</x:String>
+                                <x:String>Missing</x:String>
+                                <x:String>Adopted</x:String>
                             </x:Array>
                         </Picker.ItemsSource>
                     </Picker>
                 </Grid>
             </Frame>
 
-            <Entry Placeholder="나이 (예: 3살)" Text="{Binding Age}" Keyboard="Numeric"/>
+            <Entry Placeholder="Age (e.g., 3 years old)" Text="{Binding Age}" Keyboard="Numeric"/>
 
             <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                 <Entry Grid.Column="0" Placeholder="몸무게 (kg)" Text="{Binding Weight}" Keyboard="Numeric"/>
                 <Entry Grid.Column="1" Placeholder="상태 (예: 건강함)" Text="{Binding Condition}" />
             </Grid>
 
-            <Entry Placeholder="특징 (예: 꼬리가 짧음)" Text="{Binding Feature}" />
-            <Entry Placeholder="연락처 (예: 010-1234-5678)" Text="{Binding Contact}" Keyboard="Telephone"/>
+            <Entry Placeholder="Features (e.g., short tail)" Text="{Binding Feature}" />
+            <Entry Placeholder="Contact information (e.g., 010-1234-5678)" Text="{Binding Contact}" Keyboard="Telephone"/>
 
             <Frame Padding="10" BackgroundColor="#F0F0F0" BorderColor="LightGray">
                 <VerticalStackLayout Spacing="5">
-                    <Label Text="{Binding Location, TargetNullValue='📍 위치 정보 없음'}" TextColor="Black"/>
-                    <Button Text="내 위치 찾기 (GPS)" 
+                    <Label Text="{Binding Location, TargetNullValue='No location information'}" TextColor="Black"/>
+                    <Button Text="Find My Location (GPS)" 
                             Command="{Binding GetCurrentLocationCommand}" 
                             BackgroundColor="#2196F3" 
                             HeightRequest="40"
@@ -115,14 +115,14 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <Editor Placeholder="추가 설명" 
+            <Editor Placeholder="Additional explanation" 
                     Text="{Binding Description}" 
                     HeightRequest="80" 
                     AutoSize="TextChanges"/>
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Blue"/>
 
-            <Button Text="등록하기" 
+            <Button Text="Register" 
                     Command="{Binding SavePetCommand}" 
                     BackgroundColor="#4CAF50" 
                     FontAttributes="Bold"

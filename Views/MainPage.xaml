@@ -4,15 +4,15 @@
              x:Class="_SPS.Views.MainPage"
              xmlns:viewmodels="clr-namespace:_SPS.ViewModels"
              xmlns:models="clr-namespace:_SPS.Models"
-             Title="SPS 보호소">
+             Title="SPS Shelter">
 
     <ContentPage.BindingContext>
         <viewmodels:MainViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="내가 쓴 글" Command="{Binding NavigateToMyUploadsCommand}" Order="Secondary"/>
-        <ToolbarItem Text="로그아웃" Command="{Binding LogoutCommand}" Order="Secondary"/>
+        <ToolbarItem Text="The article I wrote" Command="{Binding NavigateToMyUploadsCommand}" Order="Secondary"/>
+        <ToolbarItem Text="LogOut" Command="{Binding LogoutCommand}" Order="Secondary"/>
     </ContentPage.ToolbarItems>
 
     <Grid>
@@ -20,23 +20,23 @@
 
             <Frame Grid.Row="0" BackgroundColor="White" Padding="15" Margin="10,10,10,5" CornerRadius="15" HasShadow="True">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="{Binding UserEmail, StringFormat='👤 로그인: {0}'}" TextColor="#555" FontSize="12" HorizontalOptions="End"/>
+                    <Label Text="{Binding UserEmail, StringFormat='Login: {0}'}" TextColor="#555" FontSize="12" HorizontalOptions="End"/>
 
                     <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
-                        <Entry Grid.Column="0" Placeholder="견종" Text="{Binding SearchSpecies}" HeightRequest="40"/>
-                        <Entry Grid.Column="1" Placeholder="지역" Text="{Binding SearchLocation}" HeightRequest="40"/>
+                        <Entry Grid.Column="0" Placeholder="breed" Text="{Binding SearchSpecies}" HeightRequest="40"/>
+                        <Entry Grid.Column="1" Placeholder="Region" Text="{Binding SearchLocation}" HeightRequest="40"/>
                     </Grid>
 
                     <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
                         <Frame Grid.Column="0" Padding="10,0" BorderColor="#ddd" CornerRadius="5" BackgroundColor="#F9F9F9" HeightRequest="40">
                             <Grid ColumnDefinitions="Auto, *">
-                                <Label Grid.Column="0" Text="성별" VerticalOptions="Center" FontAttributes="Bold" TextColor="#555" FontSize="13" Margin="0,0,5,0"/>
+                                <Label Grid.Column="0" Text="Gender" VerticalOptions="Center" FontAttributes="Bold" TextColor="#555" FontSize="13" Margin="0,0,5,0"/>
                                 <Picker Grid.Column="1" SelectedItem="{Binding SearchGender}" TextColor="Black" FontSize="13" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
                                     <Picker.ItemsSource>
                                         <x:Array Type="{x:Type x:String}">
-                                            <x:String>전체</x:String>
-                                            <x:String>수컷</x:String>
-                                            <x:String>암컷</x:String>
+                                            <x:String>All</x:String>
+                                            <x:String>Male</x:String>
+                                            <x:String>FeMale</x:String>
                                         </x:Array>
                                     </Picker.ItemsSource>
                                 </Picker>
@@ -45,14 +45,14 @@
 
                         <Frame Grid.Column="1" Padding="10,0" BorderColor="#ddd" CornerRadius="5" BackgroundColor="#F9F9F9" HeightRequest="40">
                             <Grid ColumnDefinitions="Auto, *">
-                                <Label Grid.Column="0" Text="상태" VerticalOptions="Center" FontAttributes="Bold" TextColor="#555" FontSize="13" Margin="0,0,5,0"/>
+                                <Label Grid.Column="0" Text="Status" VerticalOptions="Center" FontAttributes="Bold" TextColor="#555" FontSize="13" Margin="0,0,5,0"/>
                                 <Picker Grid.Column="1" SelectedItem="{Binding SearchStatus}" TextColor="Black" FontSize="13" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
                                     <Picker.ItemsSource>
                                         <x:Array Type="{x:Type x:String}">
-                                            <x:String>전체</x:String>
-                                            <x:String>보호중</x:String>
-                                            <x:String>실종</x:String>
-                                            <x:String>입양완료</x:String>
+                                            <x:String>All</x:String>
+                                            <x:String>Under Care</x:String>
+                                            <x:String>Missing</x:String>
+                                            <x:String>Adopted</x:String>
                                         </x:Array>
                                     </Picker.ItemsSource>
                                 </Picker>
@@ -60,8 +60,8 @@
                         </Frame>
                     </Grid>
 
-                    <Button Text="🔍 조건 검색" Command="{Binding SearchPetsCommand}" BackgroundColor="#2196F3" TextColor="White" HeightRequest="40" CornerRadius="8"/>
-                    <Button Text="필터 초기화" Command="{Binding ResetFilterCommand}" BackgroundColor="Transparent" TextColor="Gray" FontSize="12" HeightRequest="30" Margin="0,-5,0,0"/>
+                    <Button Text="Conditional Search" Command="{Binding SearchPetsCommand}" BackgroundColor="#2196F3" TextColor="White" HeightRequest="40" CornerRadius="8"/>
+                    <Button Text="Filter reset" Command="{Binding ResetFilterCommand}" BackgroundColor="Transparent" TextColor="Gray" FontSize="12" HeightRequest="30" Margin="0,-5,0,0"/>
                 </VerticalStackLayout>
             </Frame>
 
@@ -72,7 +72,7 @@
 
                 <CollectionView.EmptyView>
                     <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-                        <Label Text="등록된 동물이 없거나 검색 결과가 없습니다." TextColor="Gray"/>
+                        <Label Text="There are no registered animals or no search results." TextColor="Gray"/>
                     </StackLayout>
                 </CollectionView.EmptyView>
 
