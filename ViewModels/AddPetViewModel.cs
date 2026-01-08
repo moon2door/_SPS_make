@@ -40,7 +40,7 @@ namespace _SPS.ViewModels
         private readonly FirebaseClient _dbClient;
         private readonly FirebaseAuthClient _authClient;
 
-        private const string GeminiApiKey = "AIzaSyDqJiZwvCFsb2t8jsYK2TUHMNENDdenz-w";
+        private const string GeminiApiKey = "-";
 
         public AddPetViewModel()
         {

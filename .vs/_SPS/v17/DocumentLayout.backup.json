@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\\uC0C8 \uD3F4\uB354\\_SPS_make\\",
+  "WorkspaceRootPath": "C:\\_SPS\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|e:\\\uC0C8 \uD3F4\uB354\\_sps_make\\viewmodels\\addpetviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\viewmodels\\addpetviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:viewmodels\\addpetviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -20,11 +20,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "AddPetViewModel.cs",
-              "DocumentMoniker": "E:\\\uC0C8 \uD3F4\uB354\\_SPS_make\\ViewModels\\AddPetViewModel.cs",
+              "DocumentMoniker": "C:\\_SPS\\ViewModels\\AddPetViewModel.cs",
               "RelativeDocumentMoniker": "ViewModels\\AddPetViewModel.cs",
-              "ToolTip": "E:\\\uC0C8 \uD3F4\uB354\\_SPS_make\\ViewModels\\AddPetViewModel.cs",
+              "ToolTip": "C:\\_SPS\\ViewModels\\AddPetViewModel.cs",
               "RelativeToolTip": "ViewModels\\AddPetViewModel.cs",
-              "ViewState": "AgIAAG4AAAAAAAAAAAAQwJYAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABoAAAAAAAAAAAAQwCMAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-07T06:50:59.302Z",
               "EditorCaption": ""
