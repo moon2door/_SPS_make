@@ -97,8 +97,8 @@
             <Entry Placeholder="Age (e.g., 3 years old)" Text="{Binding Age}" Keyboard="Numeric"/>
 
             <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                <Entry Grid.Column="0" Placeholder="몸무게 (kg)" Text="{Binding Weight}" Keyboard="Numeric"/>
-                <Entry Grid.Column="1" Placeholder="상태 (예: 건강함)" Text="{Binding Condition}" />
+                <Entry Grid.Column="0" Placeholder="Weight (kg)" Text="{Binding Weight}" Keyboard="Numeric"/>
+                <Entry Grid.Column="1" Placeholder="Status (e.g., health)" Text="{Binding Condition}" />
             </Grid>
 
             <Entry Placeholder="Features (e.g., short tail)" Text="{Binding Feature}" />
