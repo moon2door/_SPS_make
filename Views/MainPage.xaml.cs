@@ -1,26 +1,21 @@
-using _SPS.ViewModels;
-
-namespace _SPS.Views;
-
-public partial class MainPage : ContentPage
+namespace _SPS.Views
 {
-    public MainPage()
+    public partial class MainPage : ContentPage
     {
-        InitializeComponent();
-    }
-
-    // 화면이 나타날 때마다 실행되는 함수
-    protected override async void OnAppearing()
-    {
-        base.OnAppearing();
-
-        if (BindingContext is MainViewModel viewModel)
+        public MainPage()
         {
-            // 1. 동물 목록 불러오기
-            await viewModel.LoadPets();
+            InitializeComponent();
+        }
 
-            // 2. ★ [추가됨] 내 닉네임 불러오기
-            await viewModel.LoadUserInfo();
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // ViewModel의 비동기 메서드 호출
+            if (BindingContext is ViewModels.MainViewModel viewModel)
+            {
+                await viewModel.OnAppearing();
+            }
         }
     }
 }

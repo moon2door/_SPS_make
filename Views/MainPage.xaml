@@ -1,131 +1,67 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="_SPS.Views.MainPage"
              xmlns:viewmodels="clr-namespace:_SPS.ViewModels"
              xmlns:models="clr-namespace:_SPS.Models"
-             Title="SPS Shelter">
+             x:Class="_SPS.Views.MainPage"
+             Title="SPS Home">
 
     <ContentPage.BindingContext>
         <viewmodels:MainViewModel />
     </ContentPage.BindingContext>
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="The article I wrote" Command="{Binding NavigateToMyUploadsCommand}" Order="Secondary"/>
-        <ToolbarItem Text="LogOut" Command="{Binding LogoutCommand}" Order="Secondary"/>
-    </ContentPage.ToolbarItems>
+    <Grid RowDefinitions="Auto, *" RowSpacing="0" BackgroundColor="#F5F5F5">
 
-    <Grid>
-        <Grid RowDefinitions="Auto, *">
+        <VerticalStackLayout Grid.Row="0" Spacing="10" Padding="20" BackgroundColor="White">
+            <Label Text="{Binding WelcomeMessage}" 
+                   FontSize="20" FontAttributes="Bold" TextColor="#333"/>
 
-            <Frame Grid.Row="0" BackgroundColor="White" Padding="15" Margin="10,10,10,5" CornerRadius="15" HasShadow="True">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="{Binding UserEmail, StringFormat='Login: {0}'}" TextColor="#555" FontSize="12" HorizontalOptions="End"/>
+            <Button Text="+ Register New Animal" 
+                    Command="{Binding GoToAddPetCommand}" 
+                    IsVisible="{Binding IsShelterMode}"
+                    BackgroundColor="#4CAF50" TextColor="White" FontAttributes="Bold" CornerRadius="8"/>
 
-                    <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
-                        <Entry Grid.Column="0" Placeholder="breed" Text="{Binding SearchSpecies}" HeightRequest="40"/>
-                        <Entry Grid.Column="1" Placeholder="Region" Text="{Binding SearchLocation}" HeightRequest="40"/>
-                    </Grid>
+            <Button Text="📢 Report Lost Pet" 
+                    IsVisible="{Binding IsSeekerMode}"
+                    BackgroundColor="#FF9800" TextColor="White" FontAttributes="Bold" CornerRadius="8"/>
 
-                    <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
-                        <Frame Grid.Column="0" Padding="10,0" BorderColor="#ddd" CornerRadius="5" BackgroundColor="#F9F9F9" HeightRequest="40">
-                            <Grid ColumnDefinitions="Auto, *">
-                                <Label Grid.Column="0" Text="Gender" VerticalOptions="Center" FontAttributes="Bold" TextColor="#555" FontSize="13" Margin="0,0,5,0"/>
-                                <Picker Grid.Column="1" SelectedItem="{Binding SearchGender}" TextColor="Black" FontSize="13" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-                                    <Picker.ItemsSource>
-                                        <x:Array Type="{x:Type x:String}">
-                                            <x:String>All</x:String>
-                                            <x:String>Male</x:String>
-                                            <x:String>FeMale</x:String>
-                                        </x:Array>
-                                    </Picker.ItemsSource>
-                                </Picker>
-                            </Grid>
-                        </Frame>
+            <Grid ColumnDefinitions="*, Auto" IsVisible="{Binding IsAdopterMode}">
+                <Entry Placeholder="Search species (e.g. Dog)" Text="{Binding SearchSpecies}" />
+                <Button Grid.Column="1" Text="Search" Command="{Binding SearchPetsCommand}" Margin="10,0,0,0"/>
+            </Grid>
 
-                        <Frame Grid.Column="1" Padding="10,0" BorderColor="#ddd" CornerRadius="5" BackgroundColor="#F9F9F9" HeightRequest="40">
-                            <Grid ColumnDefinitions="Auto, *">
-                                <Label Grid.Column="0" Text="Status" VerticalOptions="Center" FontAttributes="Bold" TextColor="#555" FontSize="13" Margin="0,0,5,0"/>
-                                <Picker Grid.Column="1" SelectedItem="{Binding SearchStatus}" TextColor="Black" FontSize="13" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-                                    <Picker.ItemsSource>
-                                        <x:Array Type="{x:Type x:String}">
-                                            <x:String>All</x:String>
-                                            <x:String>Under Care</x:String>
-                                            <x:String>Missing</x:String>
-                                            <x:String>Adopted</x:String>
-                                        </x:Array>
-                                    </Picker.ItemsSource>
-                                </Picker>
-                            </Grid>
-                        </Frame>
-                    </Grid>
+            <Button Text="Logout" Command="{Binding LogoutCommand}" 
+                    BackgroundColor="Transparent" TextColor="Gray" FontSize="12" 
+                    HorizontalOptions="End" HeightRequest="30"/>
+        </VerticalStackLayout>
 
-                    <Button Text="Conditional Search" Command="{Binding SearchPetsCommand}" BackgroundColor="#2196F3" TextColor="White" HeightRequest="40" CornerRadius="8"/>
-                    <Button Text="Filter reset" Command="{Binding ResetFilterCommand}" BackgroundColor="Transparent" TextColor="Gray" FontSize="12" HeightRequest="30" Margin="0,-5,0,0"/>
-                </VerticalStackLayout>
-            </Frame>
-
-            <CollectionView Grid.Row="1" 
-                            Margin="0,0,0,80" 
-                            ItemsSource="{Binding Pets}" 
-                            SelectionMode="None">
-
-                <CollectionView.EmptyView>
-                    <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-                        <Label Text="There are no registered animals or no search results." TextColor="Gray"/>
-                    </StackLayout>
-                </CollectionView.EmptyView>
-
+        <RefreshView Grid.Row="1" Command="{Binding LoadPetsCommand}" IsRefreshing="{Binding IsBusy}">
+            <CollectionView ItemsSource="{Binding Pets}" SelectionMode="None">
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="10" VerticalItemSpacing="10"/>
+                    <GridItemsLayout Orientation="Vertical" Span="1" />
                 </CollectionView.ItemsLayout>
-
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:PetModel">
-                        <Frame Padding="0" CornerRadius="15" IsClippedToBounds="True" HasShadow="True" Margin="5" BackgroundColor="White">
+                        <Frame Margin="10,5" Padding="0" CornerRadius="10" HasShadow="True" BorderColor="Transparent">
                             <Frame.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=GoToDetailCommand}" CommandParameter="{Binding .}"/>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=GoToDetailCommand}" 
+                              CommandParameter="{Binding .}" />
                             </Frame.GestureRecognizers>
+                            <Grid ColumnDefinitions="120, *" HeightRequest="120">
+                                <Image Grid.Column="0" Source="{Binding ImageUrl1}" Aspect="AspectFill" BackgroundColor="LightGray"/>
 
-                            <Grid RowDefinitions="140, Auto">
-                                <Grid Grid.Row="0">
-                                    <Image Source="{Binding ImageUrl1}" Aspect="AspectFill" BackgroundColor="#f0f0f0"/>
-
-                                    <Frame HorizontalOptions="Start" VerticalOptions="Start" Margin="5" Padding="6,3" CornerRadius="5" BackgroundColor="#D32F2F" BorderColor="Transparent">
-                                        <Label Text="{Binding Status}" TextColor="White" FontSize="10" FontAttributes="Bold"/>
-                                    </Frame>
-                                </Grid>
-
-                                <VerticalStackLayout Grid.Row="1" Padding="12">
-                                    <Grid ColumnDefinitions="*, Auto">
-                                        <Label Grid.Column="0" Text="{Binding Name}" FontAttributes="Bold" FontSize="16" TextColor="#333"/>
-                                        <Label Grid.Column="1" Text="{Binding Gender}" TextColor="#2196F3" FontSize="11" FontAttributes="Bold"/>
-                                    </Grid>
-
-                                    <Label Text="{Binding Species}" TextColor="#666" FontSize="13" Margin="0,2,0,0"/>
-                                    <Label Text="{Binding Location}" TextColor="#999" FontSize="11" LineBreakMode="TailTruncation" Margin="0,5,0,0"/>
-                                </VerticalStackLayout>
+                                <StackLayout Grid.Column="1" Padding="10" Spacing="5" VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Text="{Binding Species}" FontSize="14" TextColor="Gray"/>
+                                    <Label Text="{Binding Location}" FontSize="12" TextColor="#666"/>
+                                    <Label Text="{Binding Status}" FontSize="12" TextColor="OrangeRed" FontAttributes="Bold"/>
+                                </StackLayout>
                             </Grid>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-
             </CollectionView>
+        </RefreshView>
 
-            <ActivityIndicator Grid.Row="1" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" 
-                               Color="#2196F3" VerticalOptions="Center" HorizontalOptions="Center"/>
-        </Grid>
-
-        <Button Text="+" 
-                Command="{Binding NavigateToAddPetCommand}"
-                BackgroundColor="#4CAF50" 
-                TextColor="White"
-                FontSize="30"
-                CornerRadius="30"
-                WidthRequest="60"
-                HeightRequest="60"
-                HorizontalOptions="End"
-                VerticalOptions="End"
-                Margin="20"/>
     </Grid>
 </ContentPage>

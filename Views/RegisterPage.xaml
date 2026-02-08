@@ -10,27 +10,46 @@
     </ContentPage.BindingContext>
 
     <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center">
+        <VerticalStackLayout Spacing="15" Padding="30" VerticalOptions="Center">
 
             <Label 
                 Text="Create a new account"
-                FontSize="28"
+                FontSize="24"
                 HorizontalOptions="Center"
-                FontAttributes="Bold"/>
+                FontAttributes="Bold"
+                Margin="0,0,0,10"/>
 
             <Entry
-                Placeholder="Nickname"
-                Text="{Binding Nickname}" />
-
-            <Entry
-                Placeholder="Email"
+                Placeholder="Email (Required)"
                 Text="{Binding Email}"
                 Keyboard="Email" />
 
             <Entry
-                Placeholder="Password (at least 6 characters)"
+                Placeholder="Password (Required, min 6 chars)"
                 Text="{Binding Password}"
                 IsPassword="True" />
+
+            <Entry
+                Placeholder="Nickname (ID)"
+                Text="{Binding Nickname}" />
+
+            <Label Text="Select Account Type:" FontSize="14" TextColor="Gray"/>
+            <Picker Title="Select User Type"
+                    ItemsSource="{Binding UserTypes}"
+                    SelectedItem="{Binding SelectedUserTypeName}" />
+
+            <Entry
+                Placeholder="Organization Name (If applicable)"
+                Text="{Binding OrganizationName}" />
+
+            <Entry
+                Placeholder="Address (Required for Org/Shelter)"
+                Text="{Binding Address}" />
+
+            <Entry
+                Placeholder="Phone Number"
+                Text="{Binding PhoneNumber}"
+                Keyboard="Telephone" />
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Blue" />
 
@@ -38,6 +57,7 @@
                 Text="Sign up"
                 Command="{Binding RegisterCommand}"
                 IsEnabled="{Binding CanExecute}"
+                Margin="0,20,0,0"
                 HeightRequest="50" />
 
         </VerticalStackLayout>

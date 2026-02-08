@@ -3,9 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
 using Firebase.Database;
-using Firebase.Database.Query; 
-using _SPS.Models; 
-using _SPS.Views;
+using Firebase.Database.Query; // 쿼리 확장 메서드 사용
+using _SPS.Models;
+using Microsoft.Maui.Storage; // Preferences 사용
 
 namespace _SPS.ViewModels
 {
@@ -19,13 +19,12 @@ namespace _SPS.ViewModels
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
-        [NotifyCanExecuteChangedFor(nameof(NavigateToRegisterCommand))]
         private bool isBusy;
 
         public bool CanExecute => !IsBusy;
 
         private readonly FirebaseAuthClient _authClient;
-        private readonly FirebaseClient _dbClient; 
+        private readonly FirebaseClient _dbClient;
 
         public LoginViewModel()
         {
@@ -33,13 +32,9 @@ namespace _SPS.ViewModels
             {
                 ApiKey = Constants.FirebaseApiKey,
                 AuthDomain = Constants.AuthDomain,
-                Providers = new FirebaseAuthProvider[]
-                {
-                    new EmailProvider()
-                }
+                Providers = new FirebaseAuthProvider[] { new EmailProvider() }
             };
             _authClient = new FirebaseAuthClient(config);
-
             _dbClient = new FirebaseClient(Constants.FirebaseDatabaseUrl);
         }
 
@@ -48,7 +43,7 @@ namespace _SPS.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Please enter your email and password.", "Confirmation");
+                await Application.Current.MainPage.DisplayAlert("Error", "Please enter email and password.", "OK");
                 return;
             }
 
@@ -56,36 +51,34 @@ namespace _SPS.ViewModels
 
             try
             {
+                // 1. Firebase Auth 로그인
                 var userCredential = await _authClient.SignInWithEmailAndPasswordAsync(Email, Password);
-                var user = userCredential.User;
-                var uid = user.Uid;
+                var uid = userCredential.User.Uid;
 
-                string displayName = user.Info.Email;
+                // 2. Realtime Database에서 사용자 정보(UserType 등) 가져오기
+                var userModel = await _dbClient
+                    .Child("Users")
+                    .Child(uid)
+                    .OnceSingleAsync<UserModel>();
 
-                try
+                if (userModel != null)
                 {
-                    var userInfo = await _dbClient
-                        .Child("Users")
-                        .Child(uid)
-                        .OnceSingleAsync<UserModel>();
+                    // 3. 앱 내부에 사용자 정보 저장 (세션 유지)
+                    Preferences.Set("UserUid", userModel.Uid);
+                    Preferences.Set("UserType", userModel.UserType.ToString());
+                    Preferences.Set("UserNickname", userModel.Nickname);
 
-                    if (userInfo != null && !string.IsNullOrEmpty(userInfo.Nickname))
-                    {
-                        displayName = userInfo.Nickname; 
-                    }
+                    // 4. 메인 화면으로 이동
+                    await Shell.Current.GoToAsync("//MainPage");
                 }
-                catch
+                else
                 {
-                    // DB에서 가져오기 실패하면 그냥 이메일 사용 
+                    await Application.Current.MainPage.DisplayAlert("Error", "User data not found.", "OK");
                 }
-
-                await Application.Current.MainPage.DisplayAlert("Success", $"Welcome, {displayName}!", "Start");
-
-                await Shell.Current.GoToAsync("///MainTabs");
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Login failed", "Please verify your email or password.", "Confirmation");
+                await Application.Current.MainPage.DisplayAlert("Login Failed", $"Error: {ex.Message}", "OK");
             }
             finally
             {
@@ -93,10 +86,10 @@ namespace _SPS.ViewModels
             }
         }
 
-        [RelayCommand(CanExecute = nameof(CanExecute))]
-        private async Task NavigateToRegister()
+        [RelayCommand]
+        private async Task GoToRegister()
         {
-            await Shell.Current.GoToAsync(nameof(RegisterPage));
+            await Shell.Current.GoToAsync("RegisterPage");
         }
     }
 }

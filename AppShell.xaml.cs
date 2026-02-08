@@ -1,17 +1,17 @@
-﻿using _SPS.Views; // Views 폴더 사용 선언
+﻿using _SPS.Views;
 
-namespace _SPS;
-
-public partial class AppShell : Shell
+namespace _SPS
 {
-    public AppShell()
+    public partial class AppShell : Shell
     {
-        InitializeComponent();
+        public AppShell()
+        {
+            InitializeComponent();
 
-        // "RegisterPage"라는 이름으로 경로를 등록합니다.
-        Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
-        Routing.RegisterRoute(nameof(AddPetPage), typeof(AddPetPage));
-        Routing.RegisterRoute(nameof(PetDetailPage), typeof(PetDetailPage));
-        Routing.RegisterRoute(nameof(MyUploadsPage), typeof(MyUploadsPage));
+            Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage)); // ★ 이 줄이 반드시 있어야 합니다!
+            Routing.RegisterRoute(nameof(PetDetailPage), typeof(PetDetailPage));
+            Routing.RegisterRoute(nameof(AddPetPage), typeof(AddPetPage));
+            Routing.RegisterRoute(nameof(MyUploadsPage), typeof(MyUploadsPage));
+        }
     }
 }
