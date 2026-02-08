@@ -13,6 +13,7 @@
     <Grid RowDefinitions="Auto, *" RowSpacing="0" BackgroundColor="#F5F5F5">
 
         <VerticalStackLayout Grid.Row="0" Spacing="10" Padding="20" BackgroundColor="White">
+
             <Label Text="{Binding WelcomeMessage}" 
                    FontSize="20" FontAttributes="Bold" TextColor="#333"/>
 
@@ -25,10 +26,38 @@
                     IsVisible="{Binding IsSeekerMode}"
                     BackgroundColor="#FF9800" TextColor="White" FontAttributes="Bold" CornerRadius="8"/>
 
-            <Grid ColumnDefinitions="*, Auto" IsVisible="{Binding IsAdopterMode}">
-                <Entry Placeholder="Search species (e.g. Dog)" Text="{Binding SearchSpecies}" />
-                <Button Grid.Column="1" Text="Search" Command="{Binding SearchPetsCommand}" Margin="10,0,0,0"/>
-            </Grid>
+            <Frame IsVisible="{Binding IsSearchVisible}" BackgroundColor="#F0F8FF" Padding="15" CornerRadius="10" BorderColor="#B3E5FC" HasShadow="False">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Find Your Perfect Companion" FontSize="14" FontAttributes="Bold" TextColor="#0277BD"/>
+
+                    <Grid ColumnDefinitions="*, Auto" ColumnSpacing="5">
+                        <Entry Grid.Column="0" Placeholder="Location (City/District)" Text="{Binding SearchLocation}" BackgroundColor="White" FontSize="13"/>
+                        <Button Grid.Column="1" Text="📍" Command="{Binding GetCurrentLocationCommand}" WidthRequest="45" BackgroundColor="#29B6F6" TextColor="White"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                        <Entry Grid.Column="0" Placeholder="Breed (e.g. Poodle)" Text="{Binding SearchSpecies}" BackgroundColor="White" FontSize="13"/>
+                        <Entry Grid.Column="1" Placeholder="Age (e.g. 2)" Text="{Binding SearchAge}" Keyboard="Numeric" BackgroundColor="White" FontSize="13"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                        <Frame Grid.Column="0" Padding="0" BackgroundColor="White" BorderColor="LightGray" HasShadow="False" HeightRequest="40">
+                            <Picker SelectedItem="{Binding SearchGender}" Title="Gender" TextColor="Black" FontSize="13" VerticalTextAlignment="Center">
+                                <Picker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>All</x:String>
+                                        <x:String>Male</x:String>
+                                        <x:String>Female</x:String>
+                                    </x:Array>
+                                </Picker.ItemsSource>
+                            </Picker>
+                        </Frame>
+                        <Button Grid.Column="1" Text="Search" Command="{Binding SearchPetsCommand}" BackgroundColor="#0288D1" FontAttributes="Bold" HeightRequest="40"/>
+                    </Grid>
+
+                    <Button Text="Reset Filter" Command="{Binding ResetFilterCommand}" BackgroundColor="Transparent" TextColor="Gray" FontSize="11" HorizontalOptions="Center" HeightRequest="30" Margin="0,-5,0,0"/>
+                </VerticalStackLayout>
+            </Frame>
 
             <Button Text="Logout" Command="{Binding LogoutCommand}" 
                     BackgroundColor="Transparent" TextColor="Gray" FontSize="12" 
@@ -45,11 +74,10 @@
                         <Frame Margin="10,5" Padding="0" CornerRadius="10" HasShadow="True" BorderColor="Transparent">
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=GoToDetailCommand}" 
-                              CommandParameter="{Binding .}" />
+                                                      CommandParameter="{Binding .}" />
                             </Frame.GestureRecognizers>
                             <Grid ColumnDefinitions="120, *" HeightRequest="120">
                                 <Image Grid.Column="0" Source="{Binding ImageUrl1}" Aspect="AspectFill" BackgroundColor="LightGray"/>
-
                                 <StackLayout Grid.Column="1" Padding="10" Spacing="5" VerticalOptions="Center">
                                     <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="Black"/>
                                     <Label Text="{Binding Species}" FontSize="14" TextColor="Gray"/>

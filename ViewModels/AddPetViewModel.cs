@@ -6,8 +6,9 @@ using Firebase.Auth.Providers;
 using Firebase.Database;
 using Firebase.Database.Query;
 using Firebase.Storage;
+using Microsoft.Maui.Storage; // Preferences 사용
 using System.Text;
-using System.Text.Json; 
+using System.Text.Json;
 
 namespace _SPS.ViewModels
 {
@@ -18,16 +19,20 @@ namespace _SPS.ViewModels
         [ObservableProperty] private string gender;
         [ObservableProperty] private string age;
         [ObservableProperty] private string description;
-        [ObservableProperty] private string status = "Protected";
+        [ObservableProperty] private string status = "Under Care";
         [ObservableProperty] private string weight;
         [ObservableProperty] private string condition;
         [ObservableProperty] private string feature;
         [ObservableProperty] private string contact;
         [ObservableProperty] private string location;
 
+        // [추가] 화면 제목과 버튼 텍스트를 동적으로 변경
+        [ObservableProperty] private string pageTitle = "New Animal Registration";
+        [ObservableProperty] private string buttonText = "Register";
+
         [ObservableProperty] private bool isBusy;
 
-        [ObservableProperty] private ImageSource petImageSource1; 
+        [ObservableProperty] private ImageSource petImageSource1;
         [ObservableProperty] private ImageSource petImageSource2;
         [ObservableProperty] private ImageSource petImageSource3;
         [ObservableProperty] private ImageSource petImageSource4;
@@ -36,6 +41,7 @@ namespace _SPS.ViewModels
         private FileResult _file2;
         private FileResult _file3;
         private FileResult _file4;
+        private bool _isSeeker; // 실종자 모드 여부
 
         private readonly FirebaseClient _dbClient;
         private readonly FirebaseAuthClient _authClient;
@@ -52,6 +58,22 @@ namespace _SPS.ViewModels
                 Providers = new FirebaseAuthProvider[] { new EmailProvider() }
             };
             _authClient = new FirebaseAuthClient(config);
+
+            // [추가] 유저 모드 체크
+            CheckUserMode();
+        }
+
+        private void CheckUserMode()
+        {
+            string typeString = Preferences.Get("UserType", "");
+            _isSeeker = (typeString == "LostPetSeeker");
+
+            if (_isSeeker)
+            {
+                PageTitle = "Report Lost Pet";
+                ButtonText = "Report Missing";
+                Status = "Missing"; // 기본값 변경
+            }
         }
 
         [RelayCommand]
@@ -67,38 +89,28 @@ namespace _SPS.ViewModels
 
                     switch (slot)
                     {
-                        case "1": 
+                        case "1":
                             _file1 = result;
                             PetImageSource1 = imgSource;
 
+                            // 실종자도 AI 분석을 쓸 수 있게 유지 (문구는 동일하게)
                             bool answer = await Application.Current.MainPage.DisplayAlert(
-                                "AI Analysis", "Shall we analyze the breed using this photo (front view)?", "Yes", "No");
-                            if (answer)
-                            {
-                                await AnalyzeImageWithGemini(result);
-                            }
+                                "AI Analysis",
+                                "Do you want to run a breed analysis on this front-view photo?",
+                                "Yes", "No");
+
+                            if (answer) await AnalyzeImageWithGemini(result);
                             break;
 
-                        case "2": 
-                            _file2 = result;
-                            PetImageSource2 = imgSource;
-                            break;
-
-                        case "3": 
-                            _file3 = result;
-                            PetImageSource3 = imgSource;
-                            break;
-
-                        case "4": 
-                            _file4 = result;
-                            PetImageSource4 = imgSource;
-                            break;
+                        case "2": _file2 = result; PetImageSource2 = imgSource; break;
+                        case "3": _file3 = result; PetImageSource3 = imgSource; break;
+                        case "4": _file4 = result; PetImageSource4 = imgSource; break;
                     }
                 }
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Photo selection failed: " + ex.Message, "Confirmation");
+                await Application.Current.MainPage.DisplayAlert("Error", "Photo selection failed: " + ex.Message, "OK");
             }
         }
 
@@ -112,37 +124,22 @@ namespace _SPS.ViewModels
                 using var stream = await file.OpenReadAsync();
                 using var memoryStream = new MemoryStream();
                 await stream.CopyToAsync(memoryStream);
-                byte[] imageBytes = memoryStream.ToArray();
-                string base64Image = Convert.ToBase64String(imageBytes);
+                string base64Image = Convert.ToBase64String(memoryStream.ToArray());
 
-                var promptText = "Analyze the dog in this photo and return ONLY a JSON object in English. Do not say anything else.\n\n" +
-                                 "Format:\n" +
+                var promptText = "Analyze the dog in this photo strictly. Identify the breed accurately.\n" +
+                                 "Return ONLY a pure JSON object in English without markdown code blocks.\n\n" +
+                                 "JSON Format:\n" +
                                  "{\n" +
-                                 "\"breed\": \"Dog breed (e.g., Golden Retriever)\",\n" +
-                                 "\"age\": \"Estimated age (numbers only, e.g., 3)\",\n" +
-                                 "\"weight\": \"Estimated weight in kg (numbers only, e.g., 15.5)\",\n" +
-                                 "\"condition\": \"Brief health condition in English (e.g., Healthy coat)\",\n" +
-                                 "\"feature\": \"Notable features in English (e.g., Floppy ears)\"\n" +
+                                 "\"breed\": \"Specific Breed Name\",\n" +
+                                 "\"age\": \"Estimated age (e.g., 2 years)\",\n" +
+                                 "\"weight\": \"Estimated weight (e.g., 12kg)\",\n" +
+                                 "\"condition\": \"Brief health/physical condition\",\n" +
+                                 "\"feature\": \"Distinctive visual features\"\n" +
                                  "}";
 
                 var requestBody = new
                 {
-                    contents = new[]
-                    {
-                        new
-                        {
-                            parts = new object[]
-                            {
-                                new { text = promptText },
-                                new {
-                                    inline_data = new {
-                                        mime_type = "image/jpeg",
-                                        data = base64Image
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    contents = new[] { new { parts = new object[] { new { text = promptText }, new { inline_data = new { mime_type = "image/jpeg", data = base64Image } } } } }
                 };
 
                 using var client = new HttpClient();
@@ -152,48 +149,35 @@ namespace _SPS.ViewModels
                 if (response.IsSuccessStatusCode)
                 {
                     var resultJson = await response.Content.ReadAsStringAsync();
-
                     using var doc = JsonDocument.Parse(resultJson);
                     var candidates = doc.RootElement.GetProperty("candidates");
 
                     if (candidates.GetArrayLength() > 0)
                     {
-                        var text = candidates[0]
-                            .GetProperty("content")
-                            .GetProperty("parts")[0]
-                            .GetProperty("text")
-                            .GetString();
-
+                        var text = candidates[0].GetProperty("content").GetProperty("parts")[0].GetProperty("text").GetString();
                         var cleanJson = text.Replace("```json", "").Replace("```", "").Trim();
-                        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                        var petData = JsonSerializer.Deserialize<GeminiPetData>(cleanJson, options);
 
-                        if (petData != null)
+                        try
                         {
-                            Species = petData.breed;
-                            Age = petData.age;
-                            Weight = petData.weight;
-                            Condition = petData.condition;
-                            Feature = petData.feature;
-
-                            await Application.Current.MainPage.DisplayAlert("Success", "AI Analysis complete!", "Confirmation");
+                            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                            var petData = JsonSerializer.Deserialize<GeminiPetData>(cleanJson, options);
+                            if (petData != null)
+                            {
+                                Species = petData.breed;
+                                Age = petData.age;
+                                Weight = petData.weight;
+                                Condition = petData.condition;
+                                Feature = petData.feature;
+                                await Application.Current.MainPage.DisplayAlert("Analysis Complete", $"Identified as: {Species}", "OK");
+                            }
                         }
+                        catch { await Application.Current.MainPage.DisplayAlert("Error", "Failed to parse AI response.", "OK"); }
                     }
                 }
-                else
-                {
-                    var errorMsg = await response.Content.ReadAsStringAsync();
-                    await Application.Current.MainPage.DisplayAlert("API Error", $"Response code: {response.StatusCode}\n{errorMsg}", "Confirmation");
-                }
+                else { await Application.Current.MainPage.DisplayAlert("API Error", "Failed to connect to AI service.", "OK"); }
             }
-            catch (Exception ex)
-            {
-                await Application.Current.MainPage.DisplayAlert("Analysis failed", ex.Message, "Confirmation");
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            catch (Exception ex) { await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK"); }
+            finally { IsBusy = false; }
         }
 
         [RelayCommand]
@@ -203,10 +187,7 @@ namespace _SPS.ViewModels
             try
             {
                 var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
-                if (status != PermissionStatus.Granted)
-                {
-                    status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
-                }
+                if (status != PermissionStatus.Granted) status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
 
                 if (status == PermissionStatus.Granted)
                 {
@@ -217,23 +198,13 @@ namespace _SPS.ViewModels
                         var placemark = placemarks?.FirstOrDefault();
                         if (placemark != null)
                         {
-                            Location = $"{placemark.AdminArea} {placemark.Locality} {placemark.Thoroughfare}";
+                            Location = $"{placemark.AdminArea} {placemark.Locality} {placemark.Thoroughfare} ({placemark.PostalCode})";
                         }
                     }
                 }
-                else
-                {
-                    Location = "You have no location permissions.";
-                }
             }
-            catch
-            {
-                Location = "Location not found.";
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            catch { Location = "Location not found."; }
+            finally { IsBusy = false; }
         }
 
         [RelayCommand]
@@ -243,7 +214,7 @@ namespace _SPS.ViewModels
 
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Species) || string.IsNullOrWhiteSpace(Gender))
             {
-                await Application.Current.MainPage.DisplayAlert("Notice", "Name, species, and gender are required fields.", "Confirmation");
+                await Application.Current.MainPage.DisplayAlert("Notice", "Name, Breed, and Gender are required.", "OK");
                 return;
             }
 
@@ -252,7 +223,7 @@ namespace _SPS.ViewModels
             {
                 if (_authClient.User == null)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Error", "You don't have any login information.", "Confirmation");
+                    await Application.Current.MainPage.DisplayAlert("Error", "You must be logged in.", "OK");
                     return;
                 }
 
@@ -275,7 +246,6 @@ namespace _SPS.ViewModels
                     Location = Location,
                     Description = Description,
                     OwnerId = _authClient.User.Uid,
-
                     ImageUrl1 = url1,
                     ImageUrl2 = url2,
                     ImageUrl3 = url3,
@@ -283,12 +253,51 @@ namespace _SPS.ViewModels
                 };
 
                 await _dbClient.Child("Pets").PostAsync(newPet);
-                await Application.Current.MainPage.DisplayAlert("Success", "Registered.", "Confirmation");
-                await Shell.Current.GoToAsync("..");
+
+                // [수정] Seeker 모드일 때 매칭 프로세스 시작
+                if (_isSeeker)
+                {
+                    // 1. 매칭 제안 질문
+                    bool wantMatch = await Application.Current.MainPage.DisplayAlert(
+                        "Matching Service",
+                        "Want to browse animals currently under protection?",
+                        "Yes", "No");
+
+                    if (wantMatch)
+                    {
+                        // 2. YES: 메인 화면으로 이동하면서 검색 파라미터 전달
+                        // (현재 입력한 종과 위치 정보를 넘김)
+                        var route = $"//MainPage?MatchSpecies={Species}&MatchLocation={Location}";
+                        await Shell.Current.GoToAsync(route);
+                    }
+                    else
+                    {
+                        // 3. NO: 포기(로그아웃) vs 입양(MainPage)
+                        string action = await Application.Current.MainPage.DisplayActionSheet(
+                            "What would you like to do next?", "Cancel", null, "Logout", "Look for Adoption");
+
+                        if (action == "Logout")
+                        {
+                            Preferences.Clear();
+                            await Shell.Current.GoToAsync("//LoginPage");
+                        }
+                        else if (action == "Look for Adoption")
+                        {
+                            // 그냥 필터 없이 메인으로 이동
+                            await Shell.Current.GoToAsync("//MainPage");
+                        }
+                    }
+                }
+                else
+                {
+                    // Shelter 모드: 기존대로 복귀
+                    await Application.Current.MainPage.DisplayAlert("Success", "Animal Registered Successfully.", "OK");
+                    await Shell.Current.GoToAsync("..");
+                }
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Confirmation");
+                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
             }
             finally
             {
@@ -298,22 +307,12 @@ namespace _SPS.ViewModels
 
         private async Task<string> UploadImage(FileResult file)
         {
-            if (file == null) return ""; 
-
+            if (file == null) return "";
             using var stream = await file.OpenReadAsync();
             var fileName = $"{Guid.NewGuid()}.png";
-
-            return await new FirebaseStorage(Constants.FirebaseStorageBucket)
-                .Child("PetImages").Child(fileName).PutAsync(stream);
+            return await new FirebaseStorage(Constants.FirebaseStorageBucket).Child("PetImages").Child(fileName).PutAsync(stream);
         }
 
-        public class GeminiPetData
-        {
-            public string breed { get; set; }
-            public string age { get; set; }
-            public string weight { get; set; }
-            public string condition { get; set; }
-            public string feature { get; set; }
-        }
+        public class GeminiPetData { public string breed { get; set; } public string age { get; set; } public string weight { get; set; } public string condition { get; set; } public string feature { get; set; } }
     }
 }

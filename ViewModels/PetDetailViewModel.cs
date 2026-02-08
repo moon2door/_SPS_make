@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 namespace _SPS.ViewModels
 {
     [QueryProperty(nameof(Pet), "Pet")]
-    [QueryProperty(nameof(IsReadOnly), "IsReadOnly")] 
+    [QueryProperty(nameof(IsReadOnly), "IsReadOnly")]
     public partial class PetDetailViewModel : ObservableObject
     {
         [ObservableProperty] private PetModel pet;
@@ -30,12 +30,17 @@ namespace _SPS.ViewModels
         [ObservableProperty]
         private ObservableCollection<string> petImages = new();
 
+        // 작성자(보호소) 여부
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(CanEdit))] 
+        [NotifyPropertyChangedFor(nameof(CanEdit))]
+        [NotifyPropertyChangedFor(nameof(IsNotOwner))] // [추가]
         private bool isOwner;
 
+        // [추가] 작성자가 아닌 경우 (입양 희망자 등)
+        public bool IsNotOwner => !IsOwner;
+
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(CanEdit))] 
+        [NotifyPropertyChangedFor(nameof(CanEdit))]
         private bool isReadOnly;
 
         public bool CanEdit => IsOwner && !IsReadOnly;
@@ -79,6 +84,7 @@ namespace _SPS.ViewModels
                 if (PetImages.Count == 0) PetImages.Add("dotnet_bot.png");
 
                 var myUid = _authClient.User?.Uid;
+                // 내 글인지 확인
                 IsOwner = !string.IsNullOrEmpty(myUid) && value.OwnerId == myUid;
             }
         }
@@ -86,7 +92,7 @@ namespace _SPS.ViewModels
         [RelayCommand]
         private async Task UpdatePet()
         {
-            if (!CanEdit) return; 
+            if (!CanEdit) return;
 
             bool confirm = await Application.Current.MainPage.DisplayAlert("Revision", "Would you like to modify the information?", "Yes", "No");
             if (confirm)
@@ -101,8 +107,12 @@ namespace _SPS.ViewModels
                 Pet.Contact = Contact;
                 Pet.Location = Location;
 
+                // Status, Gender 등도 업데이트 필요하다면 여기서 매핑
+                Pet.Status = Status;
+                Pet.Gender = Gender;
+
                 await _dbClient.Child("Pets").Child(Pet.Key).PutAsync(Pet);
-                await Application.Current.MainPage.DisplayAlert("Success", "It has been revised.", "Confirmation");
+                await Application.Current.MainPage.DisplayAlert("Success", "Information updated.", "OK");
                 await Shell.Current.GoToAsync("..");
             }
         }
@@ -110,14 +120,37 @@ namespace _SPS.ViewModels
         [RelayCommand]
         private async Task DeletePet()
         {
-            if (!CanEdit) return; 
+            if (!CanEdit) return;
 
-            bool confirm = await Application.Current.MainPage.DisplayAlert("Delete", "Are you sure you want to delete this?", "Delete", "Cancle");
+            bool confirm = await Application.Current.MainPage.DisplayAlert("Delete", "Are you sure you want to delete this?", "Delete", "Cancel");
             if (confirm)
             {
                 await _dbClient.Child("Pets").Child(Pet.Key).DeleteAsync();
-                await Application.Current.MainPage.DisplayAlert("Deleted", "It has been deleted.", "Confirmation");
+                await Application.Current.MainPage.DisplayAlert("Deleted", "Post has been deleted.", "OK");
                 await Shell.Current.GoToAsync("..");
+            }
+        }
+
+        // [추가] 입양 문의 버튼 기능
+        [RelayCommand]
+        private async Task AdoptPet()
+        {
+            // 의뢰인 문구: "Would You like to adopt?"
+            bool answer = await Application.Current.MainPage.DisplayAlert("Adoption Inquiry", "Would you like to adopt this pet? We will connect you to the shelter.", "Yes (Call)", "No");
+
+            if (answer)
+            {
+                if (!string.IsNullOrWhiteSpace(Contact))
+                {
+                    if (PhoneDialer.Default.IsSupported)
+                        PhoneDialer.Default.Open(Contact);
+                    else
+                        await Application.Current.MainPage.DisplayAlert("Notice", $"Please contact the shelter at: {Contact}", "OK");
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Notice", "No contact information available for this shelter.", "OK");
+                }
             }
         }
 
@@ -152,13 +185,12 @@ namespace _SPS.ViewModels
                         Title = "Animal Information Sharing",
                         File = new ShareFile(imagePath),
                         PresentationSourceBounds = DeviceInfo.Platform == DevicePlatform.iOS && DeviceInfo.Idiom == DeviceIdiom.Tablet
-                                                    ? new Rect(0, 20, 0, 0) 
+                                                    ? new Rect(0, 20, 0, 0)
                                                     : Rect.Zero
                     });
                 }
                 else
                 {
-                    // 이미지가 없으면 텍스트만 공유
                     await Share.Default.RequestAsync(new ShareTextRequest
                     {
                         Text = shareText,
@@ -168,7 +200,7 @@ namespace _SPS.ViewModels
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "An issue occurred during sharing.: " + ex.Message, "Confirmation");
+                await Application.Current.MainPage.DisplayAlert("Error", "An issue occurred during sharing.: " + ex.Message, "OK");
             }
         }
     }

@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="_SPS.Views.AddPetPage"
              xmlns:viewmodels="clr-namespace:_SPS.ViewModels"
-             Title="New Animal Registration">
-
+             Title="{Binding PageTitle}" 
+             BackgroundColor="White">
     <ContentPage.BindingContext>
         <viewmodels:AddPetViewModel />
     </ContentPage.BindingContext>
@@ -12,73 +12,56 @@
     <ScrollView>
         <VerticalStackLayout Spacing="15" Padding="20">
 
-            <Label Text="Enter Protected Animal Information" FontSize="20" FontAttributes="Bold" />
+            <Label Text="{Binding PageTitle}" FontSize="20" FontAttributes="Bold" TextColor="#333" />
 
             <Grid RowDefinitions="150, 150" ColumnDefinitions="*, *" ColumnSpacing="10" RowSpacing="10">
-
-                <Frame Grid.Row="0" Grid.Column="0" Padding="0" IsClippedToBounds="True" BackgroundColor="#eee" CornerRadius="10">
+                <Frame Grid.Row="0" Grid.Column="0" Padding="0" IsClippedToBounds="True" BackgroundColor="#F5F5F5" CornerRadius="10" BorderColor="#E0E0E0">
                     <Grid>
                         <Image Source="{Binding PetImageSource1}" Aspect="AspectFill"/>
                         <Label Text="Front (AI Analysis)" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
                         <Button BackgroundColor="Transparent" Command="{Binding PickImageCommand}" CommandParameter="1"/>
                     </Grid>
                 </Frame>
-
-                <Frame Grid.Row="0" Grid.Column="1" Padding="0" IsClippedToBounds="True" BackgroundColor="#eee" CornerRadius="10">
+                <Frame Grid.Row="0" Grid.Column="1" Padding="0" IsClippedToBounds="True" BackgroundColor="#F5F5F5" CornerRadius="10" BorderColor="#E0E0E0">
                     <Grid>
                         <Image Source="{Binding PetImageSource2}" Aspect="AspectFill"/>
-                        <Label Text="side" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
+                        <Label Text="Side" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
                         <Button BackgroundColor="Transparent" Command="{Binding PickImageCommand}" CommandParameter="2"/>
                     </Grid>
                 </Frame>
-
-                <Frame Grid.Row="1" Grid.Column="0" Padding="0" IsClippedToBounds="True" BackgroundColor="#eee" CornerRadius="10">
+                <Frame Grid.Row="1" Grid.Column="0" Padding="0" IsClippedToBounds="True" BackgroundColor="#F5F5F5" CornerRadius="10" BorderColor="#E0E0E0">
                     <Grid>
                         <Image Source="{Binding PetImageSource3}" Aspect="AspectFill"/>
-                        <Label Text="free_1" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
+                        <Label Text="Free 1" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
                         <Button BackgroundColor="Transparent" Command="{Binding PickImageCommand}" CommandParameter="3"/>
                     </Grid>
                 </Frame>
-
-                <Frame Grid.Row="1" Grid.Column="1" Padding="0" IsClippedToBounds="True" BackgroundColor="#eee" CornerRadius="10">
+                <Frame Grid.Row="1" Grid.Column="1" Padding="0" IsClippedToBounds="True" BackgroundColor="#F5F5F5" CornerRadius="10" BorderColor="#E0E0E0">
                     <Grid>
                         <Image Source="{Binding PetImageSource4}" Aspect="AspectFill"/>
-                        <Label Text="free_2" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
+                        <Label Text="With Owner / Free 2" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Gray" InputTransparent="True"/>
                         <Button BackgroundColor="Transparent" Command="{Binding PickImageCommand}" CommandParameter="4"/>
                     </Grid>
                 </Frame>
             </Grid>
 
-            <Entry Placeholder="Name (e.g., Poppie)" Text="{Binding Name}" />
-            <Entry Placeholder="Breed (e.g., Maltese)" Text="{Binding Species}" />
+            <Entry Placeholder="Name" Text="{Binding Name}" />
+            <Entry Placeholder="Breed" Text="{Binding Species}" />
 
             <Frame Padding="15,5" BorderColor="LightGray" CornerRadius="10" BackgroundColor="#F5F5F5" HasShadow="False">
                 <Grid ColumnDefinitions="Auto, *">
-                    <Label Grid.Column="0" 
-                           Text="Gender" 
-                           FontAttributes="Bold"
-                           FontSize="16"
-                           VerticalOptions="Center" 
-                           TextColor="#333"
-                           Margin="0,0,10,0"/>
-
-                    <Picker Grid.Column="1" 
-                            Title="Select" 
-                            SelectedItem="{Binding Gender}"
-                            TextColor="Black"
-                            TitleColor="Gray"
-                            HorizontalOptions="FillAndExpand">
+                    <Label Grid.Column="0" Text="Gender" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" TextColor="#333" Margin="0,0,10,0"/>
+                    <Picker Grid.Column="1" SelectedItem="{Binding Gender}" TextColor="Black" TitleColor="Gray" HorizontalOptions="FillAndExpand">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
                                 <x:String>Male</x:String>
                                 <x:String>Female</x:String>
-                                <x:String>Unknown</x:String>
                             </x:Array>
                         </Picker.ItemsSource>
                     </Picker>
                 </Grid>
             </Frame>
-            
+
             <Frame Padding="15,5" BorderColor="LightGray" CornerRadius="10" BackgroundColor="#F5F5F5" HasShadow="False">
                 <Grid ColumnDefinitions="Auto, *">
                     <Label Grid.Column="0" Text="Status" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" TextColor="#333" Margin="0,0,10,0"/>
@@ -98,16 +81,16 @@
 
             <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                 <Entry Grid.Column="0" Placeholder="Weight (kg)" Text="{Binding Weight}" Keyboard="Numeric"/>
-                <Entry Grid.Column="1" Placeholder="Status (e.g., health)" Text="{Binding Condition}" />
+                <Entry Grid.Column="1" Placeholder="Condition (e.g., Healthy)" Text="{Binding Condition}" />
             </Grid>
 
-            <Entry Placeholder="Features (e.g., short tail)" Text="{Binding Feature}" />
-            <Entry Placeholder="Contact information (e.g., 010-1234-5678)" Text="{Binding Contact}" Keyboard="Telephone"/>
+            <Entry Placeholder="Features" Text="{Binding Feature}" />
+            <Entry Placeholder="Contact (Phone)" Text="{Binding Contact}" Keyboard="Telephone"/>
 
             <Frame Padding="10" BackgroundColor="#F0F0F0" BorderColor="LightGray">
                 <VerticalStackLayout Spacing="5">
-                    <Label Text="{Binding Location, TargetNullValue='No location information'}" TextColor="Black"/>
-                    <Button Text="Find My Location (GPS)" 
+                    <Label Text="{Binding Location, TargetNullValue='No location info'}" TextColor="Black" FontSize="12"/>
+                    <Button Text="Find Location (GPS)" 
                             Command="{Binding GetCurrentLocationCommand}" 
                             BackgroundColor="#2196F3" 
                             HeightRequest="40"
@@ -115,14 +98,14 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <Editor Placeholder="Additional explanation" 
+            <Editor Placeholder="Details about the lost pet..." 
                     Text="{Binding Description}" 
                     HeightRequest="80" 
                     AutoSize="TextChanges"/>
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Blue"/>
 
-            <Button Text="Register" 
+            <Button Text="{Binding ButtonText}" 
                     Command="{Binding SavePetCommand}" 
                     BackgroundColor="#4CAF50" 
                     FontAttributes="Bold"

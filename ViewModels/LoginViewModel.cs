@@ -3,9 +3,10 @@ using CommunityToolkit.Mvvm.Input;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
 using Firebase.Database;
-using Firebase.Database.Query; // 쿼리 확장 메서드 사용
+using Firebase.Database.Query;
 using _SPS.Models;
-using Microsoft.Maui.Storage; // Preferences 사용
+using Microsoft.Maui.Storage;
+using _SPS.Views; // nameof(RegisterPage)를 사용하기 위해 추가
 
 namespace _SPS.ViewModels
 {
@@ -19,6 +20,7 @@ namespace _SPS.ViewModels
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
+        [NotifyCanExecuteChangedFor(nameof(NavigateToRegisterCommand))] // 변경된 이름 반영
         private bool isBusy;
 
         public bool CanExecute => !IsBusy;
@@ -55,7 +57,7 @@ namespace _SPS.ViewModels
                 var userCredential = await _authClient.SignInWithEmailAndPasswordAsync(Email, Password);
                 var uid = userCredential.User.Uid;
 
-                // 2. Realtime Database에서 사용자 정보(UserType 등) 가져오기
+                // 2. Realtime Database에서 사용자 정보 가져오기
                 var userModel = await _dbClient
                     .Child("Users")
                     .Child(uid)
@@ -63,12 +65,12 @@ namespace _SPS.ViewModels
 
                 if (userModel != null)
                 {
-                    // 3. 앱 내부에 사용자 정보 저장 (세션 유지)
+                    // 3. 앱 내부에 사용자 정보 저장
                     Preferences.Set("UserUid", userModel.Uid);
                     Preferences.Set("UserType", userModel.UserType.ToString());
                     Preferences.Set("UserNickname", userModel.Nickname);
 
-                    // 4. 메인 화면으로 이동
+                    // 4. 메인 화면으로 이동 (절대 경로)
                     await Shell.Current.GoToAsync("//MainPage");
                 }
                 else
@@ -86,10 +88,10 @@ namespace _SPS.ViewModels
             }
         }
 
-        [RelayCommand]
-        private async Task GoToRegister()
+        [RelayCommand(CanExecute = nameof(CanExecute))]
+        private async Task NavigateToRegister()
         {
-            await Shell.Current.GoToAsync("RegisterPage");
+            await Shell.Current.GoToAsync(nameof(RegisterPage));
         }
     }
 }

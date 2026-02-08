@@ -13,37 +13,21 @@
         <VerticalStackLayout Spacing="20" Padding="0,0,0,30">
 
             <Grid HeightRequest="300">
-                <CarouselView ItemsSource="{Binding PetImages}"
-                              IndicatorView="indicatorView">
+                <CarouselView ItemsSource="{Binding PetImages}" IndicatorView="indicatorView">
                     <CarouselView.ItemTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding .}" 
-                                   Aspect="AspectFill" 
-                                   BackgroundColor="#f0f0f0"/>
+                            <Image Source="{Binding .}" Aspect="AspectFill" BackgroundColor="#f0f0f0"/>
                         </DataTemplate>
                     </CarouselView.ItemTemplate>
                 </CarouselView>
-
-                <IndicatorView x:Name="indicatorView"
-                               IndicatorColor="LightGray"
-                               SelectedIndicatorColor="Black"
-                               HorizontalOptions="Center"
-                               VerticalOptions="End"
-                               Margin="0,0,0,10"/>
+                <IndicatorView x:Name="indicatorView" IndicatorColor="LightGray" SelectedIndicatorColor="Black" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,10"/>
             </Grid>
 
             <VerticalStackLayout Spacing="10" Padding="20">
 
                 <StackLayout Orientation="Vertical" Spacing="5">
-
                     <Frame HorizontalOptions="Start" Padding="0" BackgroundColor="#FFEBEE" BorderColor="#EF9A9A" CornerRadius="5" HasShadow="False">
-                        <Picker SelectedItem="{Binding Status}" 
-                                TextColor="#C62828" 
-                                FontSize="12" 
-                                FontAttributes="Bold"
-                                IsEnabled="{Binding CanEdit}" 
-                                Margin="10,0"
-                                Title="Status Selection">
+                        <Picker SelectedItem="{Binding Status}" TextColor="#C62828" FontSize="12" FontAttributes="Bold" IsEnabled="{Binding CanEdit}" Margin="10,0" Title="Status">
                             <Picker.ItemsSource>
                                 <x:Array Type="{x:Type x:String}">
                                     <x:String>Under Care</x:String>
@@ -55,27 +39,14 @@
                     </Frame>
 
                     <StackLayout Orientation="Horizontal" Spacing="10">
-                        <Entry Text="{Binding Name}" 
-                               IsReadOnly="{Binding IsReadOnly}"
-                               FontSize="28" 
-                               FontAttributes="Bold" 
-                               TextColor="Black"
-                               Placeholder="Name"
-                               HorizontalOptions="FillAndExpand"/>
+                        <Entry Text="{Binding Name}" IsReadOnly="{Binding IsReadOnly}" FontSize="28" FontAttributes="Bold" TextColor="Black" Placeholder="Name" HorizontalOptions="FillAndExpand"/>
 
                         <Frame Padding="0" BackgroundColor="#E3F2FD" CornerRadius="5" BorderColor="Transparent" VerticalOptions="Center" HasShadow="False">
-                            <Picker SelectedItem="{Binding Gender}" 
-                                    TextColor="#1976D2" 
-                                    FontSize="12" 
-                                    FontAttributes="Bold"
-                                    IsEnabled="{Binding CanEdit}"
-                                    Margin="10,0"
-                                    Title="Gender">
+                            <Picker SelectedItem="{Binding Gender}" TextColor="#1976D2" FontSize="12" FontAttributes="Bold" IsEnabled="{Binding CanEdit}" Margin="10,0" Title="Gender">
                                 <Picker.ItemsSource>
                                     <x:Array Type="{x:Type x:String}">
                                         <x:String>Male</x:String>
                                         <x:String>Female</x:String>
-                                        <x:String>UnKnown</x:String>
                                     </x:Array>
                                 </Picker.ItemsSource>
                             </Picker>
@@ -83,73 +54,58 @@
                     </StackLayout>
                 </StackLayout>
 
-                <Entry Text="{Binding Species}" 
-                       IsReadOnly="{Binding IsReadOnly}"
-                       FontSize="18" 
-                       TextColor="Gray"
-                       Placeholder="Breed"/>
-
+                <Entry Text="{Binding Species}" IsReadOnly="{Binding IsReadOnly}" FontSize="18" TextColor="Gray" Placeholder="Breed"/>
                 <BoxView HeightRequest="1" Color="LightGray" />
 
                 <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto, Auto" RowSpacing="10" ColumnSpacing="15">
-
                     <Label Grid.Row="0" Grid.Column="0" Text="Age" FontAttributes="Bold" VerticalOptions="Center"/>
-                    <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Age}" IsReadOnly="{Binding IsReadOnly}" Placeholder="Enter age"/>
+                    <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Age}" IsReadOnly="{Binding IsReadOnly}" Placeholder="Age"/>
 
-                    <Label Grid.Row="1" Grid.Column="0" Text="weight" FontAttributes="Bold" VerticalOptions="Center"/>
-                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Weight}" IsReadOnly="{Binding IsReadOnly}" Placeholder="Enter weight"/>
+                    <Label Grid.Row="1" Grid.Column="0" Text="Weight" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Weight}" IsReadOnly="{Binding IsReadOnly}" Placeholder="Weight"/>
 
-                    <Label Grid.Row="2" Grid.Column="0" Text="Status" FontAttributes="Bold" VerticalOptions="Center"/>
-                    <Entry Grid.Row="2" Grid.Column="1" Text="{Binding Condition}" IsReadOnly="{Binding IsReadOnly}" Placeholder="Health status"/>
+                    <Label Grid.Row="2" Grid.Column="0" Text="Condition" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <Entry Grid.Row="2" Grid.Column="1" Text="{Binding Condition}" IsReadOnly="{Binding IsReadOnly}" Placeholder="Health Condition"/>
 
                     <Label Grid.Row="3" Grid.Column="0" Text="Features" FontAttributes="Bold" VerticalOptions="Center"/>
                     <Entry Grid.Row="3" Grid.Column="1" Text="{Binding Feature}" IsReadOnly="{Binding IsReadOnly}" Placeholder="Features"/>
-
                 </Grid>
 
                 <Frame BackgroundColor="#FFF3E0" BorderColor="#FFB74D" Padding="15" Margin="0,10">
                     <VerticalStackLayout>
-                        <Label Text="Discovery/Protection Location" TextColor="#F57C00" FontAttributes="Bold" Margin="0,0,0,5"/>
-                        <Entry Text="{Binding Location}" 
-                               IsReadOnly="{Binding IsReadOnly}"
-                               TextColor="Black"
-                               Placeholder="Location Information Update"/>
+                        <Label Text="Location" TextColor="#F57C00" FontAttributes="Bold" Margin="0,0,0,5"/>
+                        <Entry Text="{Binding Location}" IsReadOnly="{Binding IsReadOnly}" TextColor="Black" Placeholder="Location Info"/>
                     </VerticalStackLayout>
                 </Frame>
 
-                <Button Text="Share on SNS" 
-                        Command="{Binding SharePetCommand}"
-                        BackgroundColor="#3b5998" 
-                        TextColor="White"
-                        FontAttributes="Bold"
-                        CornerRadius="10"
-                        Margin="0,0,0,15"
-                        HeightRequest="50"/>
+                <Button Text="Share on SNS" Command="{Binding SharePetCommand}" BackgroundColor="#3b5998" TextColor="White" FontAttributes="Bold" CornerRadius="10" Margin="0,0,0,15" HeightRequest="50"/>
 
                 <Frame BackgroundColor="#E8F5E9" BorderColor="#4CAF50" Padding="15">
                     <VerticalStackLayout>
-                        <Label Text="Contact Information" TextColor="#2E7D32" FontAttributes="Bold" Margin="0,0,0,5"/>
-                        <Entry Text="{Binding Contact}" 
-                               IsReadOnly="{Binding IsReadOnly}"
-                               TextColor="Black" 
-                               FontSize="16"
-                               Keyboard="Telephone"
-                               Placeholder="Update Contact Information"/>
+                        <Label Text="Contact Info" TextColor="#2E7D32" FontAttributes="Bold" Margin="0,0,0,5"/>
+                        <Entry Text="{Binding Contact}" IsReadOnly="{Binding IsReadOnly}" TextColor="Black" FontSize="16" Keyboard="Telephone" Placeholder="Phone Number"/>
                     </VerticalStackLayout>
                 </Frame>
 
-                <Label Text="Additional explanation" FontAttributes="Bold" Margin="0,10,0,0"/>
-
-                <Editor Text="{Binding Description}" 
-                        IsReadOnly="{Binding IsReadOnly}"
-                        AutoSize="TextChanges"
-                        Placeholder="Please enter the details."/>
+                <Label Text="Description" FontAttributes="Bold" Margin="0,10,0,0"/>
+                <Editor Text="{Binding Description}" IsReadOnly="{Binding IsReadOnly}" AutoSize="TextChanges" Placeholder="Details..."/>
 
             </VerticalStackLayout>
 
             <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Padding="20" IsVisible="{Binding CanEdit}">
-                <Button Grid.Column="0" Text="Edit complete." Command="{Binding UpdatePetCommand}" BackgroundColor="Orange"/>
-                <Button Grid.Column="1" Text="Delete" Command="{Binding DeletePetCommand}" BackgroundColor="Red"/>
+                <Button Grid.Column="0" Text="Update Info" Command="{Binding UpdatePetCommand}" BackgroundColor="Orange" FontAttributes="Bold"/>
+                <Button Grid.Column="1" Text="Delete" Command="{Binding DeletePetCommand}" BackgroundColor="Red" FontAttributes="Bold"/>
+            </Grid>
+
+            <Grid Padding="20" IsVisible="{Binding IsNotOwner}">
+                <Button Text="Would You like to adopt?" 
+                        Command="{Binding AdoptPetCommand}" 
+                        BackgroundColor="#4CAF50" 
+                        TextColor="White" 
+                        FontAttributes="Bold" 
+                        HeightRequest="60" 
+                        CornerRadius="10"
+                        FontSize="18"/>
             </Grid>
 
         </VerticalStackLayout>
