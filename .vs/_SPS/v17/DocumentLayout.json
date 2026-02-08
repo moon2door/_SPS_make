@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\_SPS\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\viewmodels\\addpetviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:viewmodels\\addpetviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\views\\mainpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:views\\mainpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\views\\addpetpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:views\\addpetpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\viewmodels\\addpetviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|solutionrelative:viewmodels\\addpetviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{097A7186-C5D1-44FF-91CE-2D2BC4CD8AAB}|_SPS.csproj|c:\\_sps\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
@@ -94,12 +94,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{f96a0d64-71fd-316f-b663-924c78154f2a}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 7,
@@ -110,8 +106,7 @@
               "RelativeToolTip": "MauiProgram.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-08T08:08:11.69Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-08T08:08:11.69Z"
             },
             {
               "$type": "Document",
@@ -123,18 +118,17 @@
               "RelativeToolTip": "Models\\PetModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-08T08:08:06.415Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-08T08:08:06.415Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "AddPetViewModel.cs",
               "DocumentMoniker": "C:\\_SPS\\ViewModels\\AddPetViewModel.cs",
               "RelativeDocumentMoniker": "ViewModels\\AddPetViewModel.cs",
               "ToolTip": "C:\\_SPS\\ViewModels\\AddPetViewModel.cs",
               "RelativeToolTip": "ViewModels\\AddPetViewModel.cs",
-              "ViewState": "AgIAAG4AAAAAAAAAAAAhwH0AAABmAAAAAAAAAA==",
+              "ViewState": "AgIAABkAAAAAAAAAAAAvwDMAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-07T06:50:59.302Z",
               "EditorCaption": ""
@@ -174,8 +168,7 @@
               "RelativeToolTip": "ViewModels\\MainViewModel.cs",
               "ViewState": "AgIAAMUAAAAAAAAAAAAIwNgAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-08T06:54:32.518Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-08T06:54:32.518Z"
             },
             {
               "$type": "Document",
@@ -192,7 +185,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "MainPage.xaml",
               "DocumentMoniker": "C:\\_SPS\\Views\\MainPage.xaml",
               "RelativeDocumentMoniker": "Views\\MainPage.xaml",
@@ -213,8 +206,7 @@
               "RelativeToolTip": "Constants.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-08T08:08:14.013Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-08T08:08:14.013Z"
             },
             {
               "$type": "Document",
@@ -226,8 +218,7 @@
               "RelativeToolTip": "AppShell.xaml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-02-08T06:55:57.631Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-08T06:55:57.631Z"
             },
             {
               "$type": "Document",
@@ -239,12 +230,11 @@
               "RelativeToolTip": "App.xaml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-02-08T06:55:56.828Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-08T06:55:56.828Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "AddPetPage.xaml",
               "DocumentMoniker": "C:\\_SPS\\Views\\AddPetPage.xaml",
               "RelativeDocumentMoniker": "Views\\AddPetPage.xaml",
@@ -265,8 +255,7 @@
               "RelativeToolTip": "GlobalXmlns.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-08T08:08:13.212Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-08T08:08:13.212Z"
             },
             {
               "$type": "Document",
@@ -290,8 +279,7 @@
               "RelativeToolTip": "ViewModels\\PetDetailViewModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAHwAAAB3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-08T07:49:05.073Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-08T07:49:05.073Z"
             },
             {
               "$type": "Document",
@@ -303,8 +291,7 @@
               "RelativeToolTip": "Models\\UserModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-08T07:07:47.443Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-08T07:07:47.443Z"
             },
             {
               "$type": "Document",

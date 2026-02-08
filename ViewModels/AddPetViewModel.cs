@@ -47,7 +47,7 @@ namespace _SPS.ViewModels
         private readonly FirebaseAuthClient _authClient;
 
         // 실제 키 유지
-        private const string GeminiApiKey = "AIzaSyBOaIUBsLfo3hXsPJq8YaA1-iWu1Faex5U";
+        private const string GeminiApiKey = "-";
 
         public AddPetViewModel()
         {
