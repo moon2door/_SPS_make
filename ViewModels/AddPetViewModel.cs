@@ -26,7 +26,7 @@ namespace _SPS.ViewModels
         [ObservableProperty] private string contact;
         [ObservableProperty] private string location;
 
-        // [추가] 화면 제목과 버튼 텍스트를 동적으로 변경
+        // 화면 UI 동적 변경용
         [ObservableProperty] private string pageTitle = "New Animal Registration";
         [ObservableProperty] private string buttonText = "Register";
 
@@ -41,12 +41,13 @@ namespace _SPS.ViewModels
         private FileResult _file2;
         private FileResult _file3;
         private FileResult _file4;
-        private bool _isSeeker; // 실종자 모드 여부
+        private bool _isSeeker;
 
         private readonly FirebaseClient _dbClient;
         private readonly FirebaseAuthClient _authClient;
 
-        private const string GeminiApiKey = "AIzaSyC8pIZR6BmYk0mI7Ak4AxXKVbdSYMbd_DM";
+        // 실제 키 유지
+        private const string GeminiApiKey = "AIzaSyBOaIUBsLfo3hXsPJq8YaA1-iWu1Faex5U";
 
         public AddPetViewModel()
         {
@@ -59,7 +60,6 @@ namespace _SPS.ViewModels
             };
             _authClient = new FirebaseAuthClient(config);
 
-            // [추가] 유저 모드 체크
             CheckUserMode();
         }
 
@@ -72,7 +72,7 @@ namespace _SPS.ViewModels
             {
                 PageTitle = "Report Lost Pet";
                 ButtonText = "Report Missing";
-                Status = "Missing"; // 기본값 변경
+                Status = "Missing";
             }
         }
 
@@ -92,16 +92,12 @@ namespace _SPS.ViewModels
                         case "1":
                             _file1 = result;
                             PetImageSource1 = imgSource;
-
-                            // 실종자도 AI 분석을 쓸 수 있게 유지 (문구는 동일하게)
                             bool answer = await Application.Current.MainPage.DisplayAlert(
                                 "AI Analysis",
                                 "Do you want to run a breed analysis on this front-view photo?",
                                 "Yes", "No");
-
                             if (answer) await AnalyzeImageWithGemini(result);
                             break;
-
                         case "2": _file2 = result; PetImageSource2 = imgSource; break;
                         case "3": _file3 = result; PetImageSource3 = imgSource; break;
                         case "4": _file4 = result; PetImageSource4 = imgSource; break;
@@ -126,24 +122,40 @@ namespace _SPS.ViewModels
                 await stream.CopyToAsync(memoryStream);
                 string base64Image = Convert.ToBase64String(memoryStream.ToArray());
 
+                string mimeType = "image/jpeg";
+                if (file.FileName.EndsWith(".png", StringComparison.OrdinalIgnoreCase)) mimeType = "image/png";
+                else if (file.FileName.EndsWith(".heic", StringComparison.OrdinalIgnoreCase)) mimeType = "image/heic";
+                else if (file.FileName.EndsWith(".webp", StringComparison.OrdinalIgnoreCase)) mimeType = "image/webp";
+
                 var promptText = "Analyze the dog in this photo strictly. Identify the breed accurately.\n" +
-                                 "Return ONLY a pure JSON object in English without markdown code blocks.\n\n" +
-                                 "JSON Format:\n" +
-                                 "{\n" +
-                                 "\"breed\": \"Specific Breed Name\",\n" +
-                                 "\"age\": \"Estimated age (e.g., 2 years)\",\n" +
-                                 "\"weight\": \"Estimated weight (e.g., 12kg)\",\n" +
-                                 "\"condition\": \"Brief health/physical condition\",\n" +
-                                 "\"feature\": \"Distinctive visual features\"\n" +
-                                 "}";
+                                         "Return ONLY a pure JSON object in English without markdown code blocks.\n\n" +
+                                         "JSON Format:\n" +
+                                         "{\n" +
+                                         "\"breed\": \"Specific Breed Name\",\n" +
+                                         "\"age\": \"Estimated age (Number ONLY, e.g., 3)\",\n" +  // 수정됨
+                                         "\"weight\": \"Estimated weight in kg (Number ONLY, e.g., 5)\",\n" + // 수정됨
+                                         "\"condition\": \"Brief health/physical condition\",\n" +
+                                         "\"feature\": \"Distinctive visual features\"\n" +
+                                         "}";
 
                 var requestBody = new
                 {
-                    contents = new[] { new { parts = new object[] { new { text = promptText }, new { inline_data = new { mime_type = "image/jpeg", data = base64Image } } } } }
+                    contents = new[] 
+                    {
+                        new 
+                        {
+                            parts = new object[] 
+                            {
+                                new { text = promptText },
+                                new { inline_data = new { mime_type = mimeType, data = base64Image } } // [수정] mimeType 변수 사용
+                             }
+                         }
+                    }
                 };
 
                 using var client = new HttpClient();
                 var jsonContent = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
+
                 var response = await client.PostAsync($"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key={GeminiApiKey}", jsonContent);
 
                 if (response.IsSuccessStatusCode)
@@ -174,7 +186,11 @@ namespace _SPS.ViewModels
                         catch { await Application.Current.MainPage.DisplayAlert("Error", "Failed to parse AI response.", "OK"); }
                     }
                 }
-                else { await Application.Current.MainPage.DisplayAlert("API Error", "Failed to connect to AI service.", "OK"); }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    await Application.Current.MainPage.DisplayAlert("API Failure", $"Code: {response.StatusCode}\nError: {errorContent}", "OK");
+                }
             }
             catch (Exception ex) { await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK"); }
             finally { IsBusy = false; }
@@ -210,7 +226,11 @@ namespace _SPS.ViewModels
         [RelayCommand]
         private async Task SavePet()
         {
-            if (IsBusy) return;
+            if (IsBusy)
+            {
+                await Application.Current.MainPage.DisplayAlert("Wait", "AI Analysis or image processing is in progress. Please wait a moment.", "OK");
+                return;
+            }
 
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Species) || string.IsNullOrWhiteSpace(Gender))
             {
@@ -254,10 +274,9 @@ namespace _SPS.ViewModels
 
                 await _dbClient.Child("Pets").PostAsync(newPet);
 
-                // [수정] Seeker 모드일 때 매칭 프로세스 시작
+                // [매칭 로직 추가] Seeker라면 저장 후 매칭 제안
                 if (_isSeeker)
                 {
-                    // 1. 매칭 제안 질문
                     bool wantMatch = await Application.Current.MainPage.DisplayAlert(
                         "Matching Service",
                         "Want to browse animals currently under protection?",
@@ -265,32 +284,17 @@ namespace _SPS.ViewModels
 
                     if (wantMatch)
                     {
-                        // 2. YES: 메인 화면으로 이동하면서 검색 파라미터 전달
-                        // (현재 입력한 종과 위치 정보를 넘김)
+                        // 메인 페이지로 이동하며 검색어 전달
                         var route = $"//MainPage?MatchSpecies={Species}&MatchLocation={Location}";
                         await Shell.Current.GoToAsync(route);
                     }
                     else
                     {
-                        // 3. NO: 포기(로그아웃) vs 입양(MainPage)
-                        string action = await Application.Current.MainPage.DisplayActionSheet(
-                            "What would you like to do next?", "Cancel", null, "Logout", "Look for Adoption");
-
-                        if (action == "Logout")
-                        {
-                            Preferences.Clear();
-                            await Shell.Current.GoToAsync("//LoginPage");
-                        }
-                        else if (action == "Look for Adoption")
-                        {
-                            // 그냥 필터 없이 메인으로 이동
-                            await Shell.Current.GoToAsync("//MainPage");
-                        }
+                        await Shell.Current.GoToAsync("//MainPage");
                     }
                 }
                 else
                 {
-                    // Shelter 모드: 기존대로 복귀
                     await Application.Current.MainPage.DisplayAlert("Success", "Animal Registered Successfully.", "OK");
                     await Shell.Current.GoToAsync("..");
                 }
